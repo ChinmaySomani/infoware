@@ -63,6 +63,13 @@ models.sequelize.sync().then(function() {
  
 });
 
+app.get('/', (req,res)=>{
+    return res.status(200).json({
+        status: "success",
+        message: "Welcome to the home page !!",
+    });
+});
+
 app.listen(process.env.PORT || 3000, process.env.IP, function(err, result){
     console.log('Server is running!');
 });

@@ -67,8 +67,9 @@ module.exports = function(passport, user) {
  
                 {
  
+                    console.log("Username already exists. Can't create the user with same mobile number");
                     return done(null, false, {
-                        message: 'That Username is already taken'
+                        message: "Username already exists. Can't create the user with same mobile number"
                     });
  
                 } else
@@ -97,12 +98,16 @@ module.exports = function(passport, user) {
  
                         if (!newUser) {
  
-                            return done(null, false);
+                            console.log("Can't able to create the new user. Some error occurred from database");
+                            return done(null, false,{
+                                message: "Can't able to create the new user. Some error occurred from database"
+                            });
  
                         }
  
                         if (newUser) {
  
+                            console.log("New user created successfully");
                             return done(null, newUser);
  
                         }
@@ -152,22 +157,33 @@ passport.use('local-signin', new LocalStrategy(
  
             if (!user) {
  
+                console.log("Username does not exists. Signup first with valid mobile no");
                 return done(null, false, {
-                    message: 'Username does not exist'
+                    message: "Username does not exists. Signup first with valid mobile no"
                 });
  
             }
  
             if (!isValidPassword(user.password, password)) {
  
+                console.log("Incorrect Password. Enter correct password");
                 return done(null, false, {
-                    message: 'Incorrect password.'
+                    message: "Incorrect Password. Enter correct password"
                 });
- 
+
+            }
+
+            var userinfo = user.get();
+
+            if(req.body.type!=userinfo.type){
+                console.log("User type does not match!! Can't login");
+                return done(null, false, {
+                    message: "User type does not match!! Can't login"
+                });
             }
  
- 
-            var userinfo = user.get();
+            console.log("You are successfully signed in");
+
             return done(null, userinfo);
  
  
@@ -175,10 +191,11 @@ passport.use('local-signin', new LocalStrategy(
  
             console.log("Error:", err);
  
+            console.log("Some error occurred with your signin from database");
             return done(null, false, {
-                message: 'Something went wrong with your Signin'
+                message: "Some error occurred with your signin from database"
             });
- 
+
         });
  
  

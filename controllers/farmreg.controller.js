@@ -1,54 +1,6 @@
 var models = require('../models');
 var exports = module.exports = {}
 
-exports.reg = function(req, res){
-    res.render('farmer_registration.ejs', {farmerid : req.params.id});
-}
-
-exports.pd =  function(req, res){
-    res.render('farmer_register_personalDetails.ejs', {pid: req.params.id});
-}
-
-exports.reg1 =  function(req, res){
-    res.render('farmer_register1.ejs', {pid: req.params.id});
-}
-
-exports.reg2 =  function(req, res){
-    res.render('farmer_register2.ejs', {pid: req.params.id});
-}
-
-exports.reg3 = function(req, res){
-    res.render('farmer_register3.ejs', {pid: req.params.id});
-}
-
-exports.reg4 = function(req, res){
-    res.render('farmer_register4.ejs', {pid: req.params.id});
-}
-
-exports.reg5 = function(req, res){
-    res.render('farmer_register5.ejs', {pid: req.params.id});
-}
-
-exports.reg6 = function(req, res){
-    res.render('farmer_register6.ejs', {pid: req.params.id});
-}
-
-exports.reg7 = function(req, res){
-    res.render('farmer_register7.ejs', {pid: req.params.id});
-}
-
-exports.reg8 = function(req, res){
-    res.render('farmer_register8.ejs', {pid: req.params.id});
-}
-
-exports.reg9 =  function(req, res){
-    res.render('farmer_register9.ejs', {pid: req.params.id});
-}
-
-exports.reg10 = function(req, res){
-    res.render('farmer_register10.ejs', {pid: req.params.id});
-}
-
 exports.reg1p = function (req, res){
     // console.log(req.body);
     var fpd = req.body;

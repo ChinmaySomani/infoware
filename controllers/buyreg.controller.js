@@ -1,58 +1,6 @@
 var models = require('../models');
 var exports = module.exports = {}
 
-exports.reg = function(req, res){
-    res.render('buyer_registration.ejs', {pid : req.params.id});
-}
-
-exports.reg1 =  function(req, res){
-    res.render('buyer_register1.ejs', {pid: req.params.id});
-}
-
-exports.reg2 =  function(req, res){
-    res.render('buyer_register2.ejs', {pid: req.params.id});
-}
-
-exports.reg3 = function(req, res){
-    res.render('buyer_register3.ejs', {pid: req.params.id});
-}
-
-exports.reg4 = function(req, res){
-    res.render('buyer_register4.ejs', {pid: req.params.id});
-}
-
-exports.reg5 = function(req, res){
-    res.render('buyer_register5.ejs', {pid: req.params.id});
-}
-
-exports.reg6 = function(req, res){
-    res.render('buyer_register6.ejs', {pid: req.params.id});
-}
-
-exports.reg7 = function(req, res){
-    res.render('buyer_register7.ejs', {pid: req.params.id});
-}
-
-exports.reg8 = function(req, res){
-    res.render('buyer_register8.ejs', {pid: req.params.id});
-}
-
-exports.reg9 =  function(req, res){
-    res.render('buyer_register9.ejs', {pid: req.params.id});
-}
-
-exports.reg10 = function(req, res){
-    res.render('buyer_register10.ejs', {pid: req.params.id});
-}
-
-exports.reg11 = function(req, res){
-    res.render('buyer_register11.ejs', {pid: req.params.id});
-}
-
-exports.reg12 = function(req, res){
-    res.render('buyer_register12.ejs', {pid: req.params.id});
-}
-
 exports.reg1p = function(req, res){
     var fpd = req.body;
     var pid = req.params.id;
