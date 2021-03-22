@@ -3,9 +3,12 @@ module.exports = function(sequelize, Sequelize) {
     var Organic = sequelize.define('organic', {
  
         organic_id: {
-            autoIncrement: true,
-            primaryKey: true,
-            type: Sequelize.INTEGER
+            // autoIncrement: true,
+            // primaryKey: true,
+            // type: Sequelize.INTEGER
+            type: Sequelize.UUID,
+            defaultValue: Sequelize.UUIDV4,
+            primaryKey: true
         },
 
         yes_or_no:{
@@ -24,16 +27,13 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.BIGINT
         },
         
-        // certificate: {
-        //     type: Sequelize.TEXT
-        // },
-        
         have_you_done_any_lab_test: {
             type: Sequelize.TEXT //yes or no
         },
 
         userid: {
-            type: Sequelize.INTEGER,
+            // type: Sequelize.INTEGER,
+            type: Sequelize.UUID,
             references: {
               model: 'users', // Can be both a string representing the table name or a Sequelize model
               key: 'id'

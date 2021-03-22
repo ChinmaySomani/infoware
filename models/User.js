@@ -3,9 +3,12 @@ module.exports = function(sequelize, Sequelize) {
     var User = sequelize.define('user', {
  
         id: {
-            autoIncrement: true,
-            primaryKey: true,
-            type: Sequelize.INTEGER
+            // autoIncrement: true,
+            // primaryKey: true,
+            // type: Sequelize.INTEGER
+            type: Sequelize.UUID,
+            defaultValue: Sequelize.UUIDV4,
+            primaryKey: true
         },
         
         name: {
@@ -36,18 +39,10 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.STRING,
             allowNull: false
         },
- 
-        last_login: {
-            type: Sequelize.DATE(new Date())
-        },
- 
-        status: {
-            type: Sequelize.ENUM('active', 'inactive'),
-            defaultValue: 'active'
-        },
 
         membership_id: {
-            type: Sequelize.INTEGER,
+            // type: Sequelize.INTEGER,
+            type: Sequelize.UUID,
             // references: {
             //   model: 'membership', // Can be both a string representing the table name or a Sequelize model
             //   key: 'id'

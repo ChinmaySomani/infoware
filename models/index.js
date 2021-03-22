@@ -8,7 +8,7 @@ const sequelize = new Sequelize('JFmJUEW7AG', 'JFmJUEW7AG', 'uQEwco18y8', {
     dialect: 'mysql'
 });
 
-// const sequelize = new Sequelize("agri_portal4", "root", "", {
+// const sequelize = new Sequelize("agri_portal_testing", "root", "", {
 //     define: {
 //       charset: "utf8mb4",
 //     },
