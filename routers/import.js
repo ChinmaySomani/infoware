@@ -2,6 +2,31 @@ var router = require('express').Router();
 var models = require('../models');
 const excelToJson = require('convert-excel-to-json');
 
+router.get("/importMedicinalCropsFromExcel",async (req,res)=>{
+    const result = excelToJson({
+        sourceFile: 'medicinal_crops.xlsx'
+    });
+    // console.log(result.Location);
+    const array = result.s;
+    for(var i=0;i<array.length;i++){
+        const medicinal_crop= await models.medicinal_crop.findOne({where:{"medicinal_crop_name":array[i].A}});
+        if(medicinal_crop){
+            console.log("Medicinal Crop already present in database");
+            // break;
+        }
+        else{
+            const obj={
+                "medicinal_crop_name": array[i].A,
+            }
+            const new_medicinal_crop= await models.medicinal_crop.create(obj);
+            new_medicinal_crop.save();
+            console.log("Successfully filled the details!!");
+            // break;
+        }
+    }
+    console.log("All entries of Medicinal Crops in excel sheet have been added to database");
+});
+
 router.get("/importCountryFromExcel",async (req,res)=>{
     const obj={
         country_name: "India",
