@@ -27,8 +27,11 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.BIGINT
         },
         
-        have_you_done_any_lab_test: {
-            type: Sequelize.TEXT //yes or no
+        // have_you_done_any_lab_test: {
+        //     type: Sequelize.TEXT //yes or no
+        // },
+        file_upload_link: {
+            type: Sequelize.TEXT
         },
 
         userid: {

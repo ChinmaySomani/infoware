@@ -1,3 +1,4 @@
+require("dotenv").config();
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -37,6 +38,7 @@ const admin = require('./routers/admin.router.js');
 const post_requirement = require('./routers/post_requirement.router.js');
 const importRoute = require('./routers/import.js');
 const locationRoute = require('./routers/location.router.js');
+const fileUploadRoute = require('./routers/file_upload.router.js');
 
 app.use('/', rout);
 app.use('/', farmreg);
@@ -45,6 +47,7 @@ app.use('/', admin);
 app.use('/',post_requirement);
 app.use('/',importRoute);
 app.use('/',locationRoute);
+app.use('/',fileUploadRoute);
 
 // app.get('/yip', function(req, res){
 //     models.user.findAll()

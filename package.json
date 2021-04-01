@@ -10,6 +10,7 @@
   "author": "Chinmay",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.876.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.19.0",
     "convert-excel-to-json": "^1.7.0",
@@ -19,10 +20,13 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "method-override": "^3.0.0",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.7",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "path": "^0.12.7",
     "sequelize": "^6.3.5"
   },
   "devDependencies": {

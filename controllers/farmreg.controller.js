@@ -10,7 +10,8 @@ exports.reg1p = function (req, res){
         });
     }
     if(typeof req.body.surname!="string" && req.body.surname){
-        return res.status(400).json({
+        return res.status(400)
+        .json({
             status: "failure",
             message: "Surname must be alphabets",
         });
@@ -74,63 +75,68 @@ exports.reg1p = function (req, res){
     var pid = req.params.id;
     fpd.userid = pid;
     
-    // var array=[];
-    // models.fpdetails.findAll({
-    //     where: {}
-    // }).then(result=>{
-    //     array=result;
-    //     console.log(array);
-    //     for(var i=0;i<array.length;i++){
-    //         if(array[i].userid==pid){
-    //             return res.status(400).json({
-    //                 status: "failure",
-    //                 message: "User has already filled this form!!",
-    //             });
-    //         }
-    //     }
+    var array=[];
+    models.fpdetails.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if(array[i].userid==pid){
+                modelId=array[i].farmerpID;
+                models.fpdetails.update(fpd,{where:{"farmerpID": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
 
-    //     models.fpdetails.create(fpd)
-    //     .then(function(result){
-    //         console.log(result);
-    //         return res.status(200).json({
-    //             status: "success",
-    //             message: "Successfully filled the details!!",
-    //             data: result,
-    //         });
-    //     }).catch(error => {
-    //         console.log(error);
-    //         return res.status(400).json({
-    //             status: "failure",
-    //             message: "Some error ocurred!",
-    //             data: null,
-    //         });
-    //     });
-
-    // }).catch(error=>{
-    //     console.log(error);
-    //     return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    // })
-    
-    models.fpdetails.create(fpd)
-    .then(function(result){
-        console.log(result);
-        return res.status(200).json({
-            status: "success",
-            message: "Successfully filled the details!!",
-            data: result,
+        models.fpdetails.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
         });
-    }).catch(error => {
+
+    }).catch(error=>{
         console.log(error);
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
             data: null,
         });
-    });
+    })
+    
+    // models.fpdetails.create(fpd)
+    // .then(function(result){
+    //     console.log(result);
+    //     return res.status(200).json({
+    //         status: "success",
+    //         message: "Successfully filled the details!!",
+    //         data: result,
+    //     });
+    // }).catch(error => {
+    //     console.log(error);
+    //     return res.status(400).json({
+    //         status: "failure",
+    //         message: "Some error ocurred!",
+    //         data: null,
+    //     });
+    // });
     
 }
 
@@ -140,22 +146,68 @@ exports.reg2p = function(req, res){
     var pid = req.params.id;
     fpd.userid = pid;
     
-    models.plantg.create(fpd)
-    .then(function(result){
-        console.log(result);
-        return res.status(200).json({
-            status: "success",
-            message: "Successfully filled the details!!",
-            data: result,
+    var array=[];
+    models.plantg.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if(array[i].userid==pid){
+                modelId=array[i].plant_id;
+                models.plantg.update(fpd,{where:{"plant_id": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.plantg.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
         });
-    }).catch(error => {
+
+    }).catch(error=>{
         console.log(error);
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
             data: null,
         });
-    });
+    })
+
+    // models.plantg.create(fpd)
+    // .then(function(result){
+    //     console.log(result);
+    //     return res.status(200).json({
+    //         status: "success",
+    //         message: "Successfully filled the details!!",
+    //         data: result,
+    //     });
+    // }).catch(error => {
+    //     console.log(error);
+    //     return res.status(400).json({
+    //         status: "failure",
+    //         message: "Some error ocurred!",
+    //         data: null,
+    //     });
+    // });
 }
 
 exports.reg3p =  function(req, res){
@@ -164,22 +216,68 @@ exports.reg3p =  function(req, res){
     var pid = req.params.id;
     fpd.userid = pid;
 
-    models.valueadd.create(fpd)
-      .then(function(result){
-          console.log(result);
-          return res.status(200).json({
-            status: "success",
-            message: "Successfully filled the details!!",
-            data: result,
+    var array=[];
+    models.valueadd.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if(array[i].userid==pid){
+                modelId=array[i].valueadd_id;
+                models.valueadd.update(fpd,{where:{"valueadd_id": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.valueadd.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
         });
-      }).catch(error => {
-          console.log(error);
-          return res.status(400).json({
+
+    }).catch(error=>{
+        console.log(error);
+        return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
             data: null,
         });
-      });
+    })
+
+    // models.valueadd.create(fpd)
+    //   .then(function(result){
+    //       console.log(result);
+    //       return res.status(200).json({
+    //         status: "success",
+    //         message: "Successfully filled the details!!",
+    //         data: result,
+    //     });
+    //   }).catch(error => {
+    //       console.log(error);
+    //       return res.status(400).json({
+    //         status: "failure",
+    //         message: "Some error ocurred!",
+    //         data: null,
+    //     });
+    //   });
 }
 
 exports.reg4p = function(req, res){
@@ -206,22 +304,69 @@ exports.reg4p = function(req, res){
     var fpd = req.body;
     var pid = req.params.id;
     fpd.userid = pid;
-    models.organic.create(fpd)
-    .then(function(result){
-        console.log(result);
-        return res.status(200).json({
-            status: "success",
-            message: "Successfully filled the details!!",
-            data: result,
+
+    var array=[];
+    models.organic.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if(array[i].userid==pid){
+                modelId=array[i].organic_id;
+                models.organic.update(fpd,{where:{"organic_id": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.organic.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
         });
-    }).catch(error => {
+
+    }).catch(error=>{
         console.log(error);
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
             data: null,
         });
-    });
+    })
+
+    // models.organic.create(fpd)
+    // .then(function(result){
+    //     console.log(result);
+    //     return res.status(200).json({
+    //         status: "success",
+    //         message: "Successfully filled the details!!",
+    //         data: result,
+    //     });
+    // }).catch(error => {
+    //     console.log(error);
+    //     return res.status(400).json({
+    //         status: "failure",
+    //         message: "Some error ocurred!",
+    //         data: null,
+    //     });
+    // });
 }
 
 exports.reg5p = function(req, res){
@@ -242,44 +387,138 @@ exports.reg5p = function(req, res){
     var fpd = req.body;
     var pid = req.params.id;
     fpd.userid = pid;
-    models.farmbuyer.create(fpd)
-    .then(function(result){
-        console.log(result);
-        return res.status(200).json({
-            status: "success",
-            message: "Successfully filled the details!!",
-            data: result,
+
+    var array=[];
+    models.farmbuyer.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if(array[i].userid==pid){
+                modelId=array[i].farmbuyer_id;
+                models.farmbuyer.update(fpd,{where:{"farmbuyer_id": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.farmbuyer.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
         });
-    }).catch(error => {
+
+    }).catch(error=>{
         console.log(error);
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
             data: null,
         });
-    });
+    })
+
+    // models.farmbuyer.create(fpd)
+    // .then(function(result){
+    //     console.log(result);
+    //     return res.status(200).json({
+    //         status: "success",
+    //         message: "Successfully filled the details!!",
+    //         data: result,
+    //     });
+    // }).catch(error => {
+    //     console.log(error);
+    //     return res.status(400).json({
+    //         status: "failure",
+    //         message: "Some error ocurred!",
+    //         data: null,
+    //     });
+    // });
 }
 
 exports.reg6p = function(req, res){
     var fpd = req.body;
     var pid = req.params.id;
     fpd.userid = pid;
-    models.problem.create(fpd)
-    .then(function(result){
-        console.log(result);
-        return res.status(200).json({
-            status: "success",
-            message: "Successfully filled the details!!",
-            data: result,
+
+    var array=[];
+    models.problem.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if(array[i].userid===pid){
+                modelId=array[i].problem_id;
+                models.problem.update(fpd,{where:{"problem_id": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.problem.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
         });
-    }).catch(error => {
+
+    }).catch(error=>{
         console.log(error);
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
             data: null,
         });
-    });
+    })
+
+    // models.problem.create(fpd)
+    // .then(function(result){
+    //     console.log(result);
+    //     return res.status(200).json({
+    //         status: "success",
+    //         message: "Successfully filled the details!!",
+    //         data: result,
+    //     });
+    // }).catch(error => {
+    //     console.log(error);
+    //     return res.status(400).json({
+    //         status: "failure",
+    //         message: "Some error ocurred!",
+    //         data: null,
+    //     });
+    // });
 }
 
 exports.reg7p = function(req, res){
@@ -287,44 +526,138 @@ exports.reg7p = function(req, res){
     var fpd = req.body;
     var pid = req.params.id;
     fpd.userid = pid;
-    models.experiment.create(fpd)
-    .then(function(result){
-        console.log(result);
-        return res.status(200).json({
-            status: "success",
-            message: "Successfully filled the details!!",
-            data: result,
+
+    var array=[];
+    models.experiment.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if(array[i].userid===pid){
+                modelId=array[i].exp_id;
+                models.experiment.update(fpd,{where:{"exp_id": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.experiment.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
         });
-    }).catch(error => {
+
+    }).catch(error=>{
         console.log(error);
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
             data: null,
         });
-    });
+    })
+
+    // models.experiment.create(fpd)
+    // .then(function(result){
+    //     console.log(result);
+    //     return res.status(200).json({
+    //         status: "success",
+    //         message: "Successfully filled the details!!",
+    //         data: result,
+    //     });
+    // }).catch(error => {
+    //     console.log(error);
+    //     return res.status(400).json({
+    //         status: "failure",
+    //         message: "Some error ocurred!",
+    //         data: null,
+    //     });
+    // });
 }
 
 exports.reg8p = function(req, res){
     var fpd = req.body;
     var pid = req.params.id;
     fpd.userid = pid;
-    models.futureplant.create(fpd)
-    .then(function(result){
-        console.log(result);
-        return res.status(200).json({
-            status: "success",
-            message: "Successfully filled the details!!",
-            data: result,
+
+    var array=[];
+    models.futureplant.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if(array[i].userid==pid){
+                modelId=array[i].fc_id;
+                models.futureplant.update(fpd,{where:{"fc_id": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.futureplant.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
         });
-    }).catch(error => {
+
+    }).catch(error=>{
         console.log(error);
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
             data: null,
         });
-    });
+    })
+
+    // models.futureplant.create(fpd)
+    // .then(function(result){
+    //     console.log(result);
+    //     return res.status(200).json({
+    //         status: "success",
+    //         message: "Successfully filled the details!!",
+    //         data: result,
+    //     });
+    // }).catch(error => {
+    //     console.log(error);
+    //     return res.status(400).json({
+    //         status: "failure",
+    //         message: "Some error ocurred!",
+    //         data: null,
+    //     });
+    // });
 }
 
 exports.reg9p = function(req, res){
@@ -351,22 +684,69 @@ exports.reg9p = function(req, res){
     var fpd = req.body;
     var pid = req.params.id;
     fpd.userid = pid;
-    models.nearbyfarmer.create(fpd)
-    .then(function(result){
-        console.log(result);
-        return res.status(200).json({
-            status: "success",
-            message: "Successfully filled the details!!",
-            data: result,
+
+    var array=[];
+    models.nearbyfarmer.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if(array[i].userid==pid){
+                modelId=array[i].nf_id;
+                models.nearbyfarmer.update(fpd,{where:{"nf_id": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.nearbyfarmer.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
         });
-    }).catch(error => {
+
+    }).catch(error=>{
         console.log(error);
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
             data: null,
         });
-    });
+    })
+
+    // models.nearbyfarmer.create(fpd)
+    // .then(function(result){
+    //     console.log(result);
+    //     return res.status(200).json({
+    //         status: "success",
+    //         message: "Successfully filled the details!!",
+    //         data: result,
+    //     });
+    // }).catch(error => {
+    //     console.log(error);
+    //     return res.status(400).json({
+    //         status: "failure",
+    //         message: "Some error ocurred!",
+    //         data: null,
+    //     });
+    // });
 }
 
 exports.reg10p = function(req, res){
@@ -387,22 +767,72 @@ exports.reg10p = function(req, res){
     var fpd = req.body;
     var pid = req.params.id;
     fpd.userid = pid;
-    models.dof.create(fpd)
-    .then(function(result){
-        console.log(result);
-        return res.status(200).json({
-            status: "success",
-            message: "Successfully filled the details!!",
-            data: result,
+
+    var array=[];
+    models.dof.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            console.log(pid);
+            console.log(array[i].userid+"\n")
+            const id=array[i].userid+"\n";
+            if(id==pid){
+                modelId=array[i].dof_id;
+                models.dof.update(fpd,{where:{"dof_id": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.dof.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
         });
-    }).catch(error => {
+
+    }).catch(error=>{
         console.log(error);
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
             data: null,
         });
-    });
+    })
+
+    // models.dof.create(fpd)
+    // .then(function(result){
+    //     console.log(result);
+    //     return res.status(200).json({
+    //         status: "success",
+    //         message: "Successfully filled the details!!",
+    //         data: result,
+    //     });
+    // }).catch(error => {
+    //     console.log(error);
+    //     return res.status(400).json({
+    //         status: "failure",
+    //         message: "Some error ocurred!",
+    //         data: null,
+    //     });
+    // });
 }
 
 exports.memF = function(req, res){
