@@ -36,7 +36,19 @@ exports.uploadFile = async function(req, res){
             imageName = req.file.key;
             imageLocation = req.file.location;
             console.log("Image location is " + imageLocation);
-  
+
+            var fpd={
+              "file_upload_link": imageLocation
+            }
+            fpd.userid = farmerId;
+
+            models.organic.create(fpd);
+
+            res.status(200).json({
+              status: "success",
+              message: "File uploaded successfully!!",
+              imageLocation: imageLocation,
+            });
             }
         }
     })
