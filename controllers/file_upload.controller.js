@@ -42,13 +42,59 @@ exports.uploadFile = async function(req, res){
             }
             fpd.userid = farmerId;
 
-            models.organic.create(fpd);
+            var array=[];
+            models.organic.findAll({
+                where: {}
+            }).then(result=>{
+              array=result;
+              console.log(array);
+              let modelId;
+              for(var i=0;i<array.length;i++){
+                  if(array[i].userid==farmerId){
+                      modelId=array[i].organic_id;
+                      models.organic.update(fpd,{where:{"organic_id": modelId}});
+                      console.log("Updated successfully");
+                      return res.status(200).json({
+                          status: "success",
+                          message: "File uploaded successfully!!",
+                      });
+                  }
+              }
 
-            res.status(200).json({
-              status: "success",
-              message: "File uploaded successfully!!",
-              imageLocation: imageLocation,
-            });
+            models.organic.create(fpd)
+          .then(function(result){
+              console.log("Created successfully");
+              console.log(result);
+              return res.status(200).json({
+                  status: "success",
+                  message: "File uploaded successfully!!",
+                  data: result,
+              });
+                }).catch(error => {
+                    console.log(error);
+                    return res.status(400).json({
+                        status: "failure",
+                        message: "Some error ocurred!",
+                        data: null,
+                    });
+                });
+
+            }).catch(error=>{
+                console.log(error);
+                return res.status(400).json({
+                    status: "failure",
+                    message: "Some error ocurred!",
+                    data: null,
+                });
+            })
+
+            // models.organic.create(fpd);
+
+            // res.status(200).json({
+            //   status: "success",
+            //   message: "File uploaded successfully!!",
+            //   imageLocation: imageLocation,
+            // });
             }
         }
     })
