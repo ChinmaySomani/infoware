@@ -2,11 +2,17 @@ const {Sequelize} = require("sequelize");
 var fs = require("fs");
 var path = require("path");
 
-const sequelize = new Sequelize('JFmJUEW7AG', 'JFmJUEW7AG', 'uQEwco18y8', {
-    host: 'remotemysql.com',
+const sequelize = new Sequelize('farmermeddb', 'farmerappdbuser', 'farmer1234', {
+    host: 'onlineorder-mysqldb-test.cidxoi55oorv.ap-south-1.rds.amazonaws.com',
     port : 3306,
     dialect: 'mysql'
 });
+
+// const sequelize = new Sequelize('JFmJUEW7AG', 'JFmJUEW7AG', 'uQEwco18y8', {
+//     host: 'remotemysql.com',
+//     port : 3306,
+//     dialect: 'mysql'
+// });
 
 // const sequelize = new Sequelize("agri_portal_testing", "root", "", {
 //     define: {
