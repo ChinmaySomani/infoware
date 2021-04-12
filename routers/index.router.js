@@ -5,29 +5,6 @@ const isLoggedIn = require('../services/auth.js');
 const farmlogin = require('../services/farmauth.js');
 var models = require('../models');
 
-// router.post('/login', passport.authenticate('local-signin', {    
-//     failureRedirect: '/signup/failure'
-// }), (req, res) => {
-
-//     console.log(req.body.type);
-//     console.log(req.user.type);
-//     console.log(req.user.id);
-//     if(req.body.type!=req.user.type){
-//         return res.status(400).json({
-//             status: "failure",
-//             message: "User type does not match!! Can't login",
-//             data: null,
-//             userId: req.user.id
-//         });
-//     }
-//     return res.status(200).json({
-//         status: "success",
-//         message: "Successfully logged in !!",
-//         data: null,
-//         userId: req.user.id
-//     });
-// });
-
 router.post('/login', function(req, res, next ){
     passport.authenticate('local-signin', function(err, user, info) {
       if (err) {
@@ -47,24 +24,14 @@ router.post('/login', function(req, res, next ){
       return res.status(200).json({
         status: "success",
         message: "Successfully logged in !!",
-        data: null,
-        userId: user.id
+        data: user,
+        userId: user.id,
+        type: user.type
      });
     })(req, res, next);   
 });
 
 router.get('/logout',index.logout);
-
-// router.post('/signup', passport.authenticate('local-signup', {    
-//     failureRedirect: '/signup/failure'
-// }), (req, res) => {
-//     return res.status(200).json({
-//         status: "success",
-//         message: "Successfully registered or logged in (if already registered)!!",
-//         data: null,
-//         userId: req.user.id
-//     });
-// });
 
 router.post('/signup', function(req, res, next ){
     passport.authenticate('local-signup', function(err, user, info) {
@@ -85,8 +52,9 @@ router.post('/signup', function(req, res, next ){
       return res.status(200).json({
         status: "success",
         message: "Successfully registered or logged in (if already registered)!!",
-        data: null,
-        userId: user.id
+        data: user,
+        userId: user.id,
+        type: user.type
       });
     })(req, res, next);   
 });
