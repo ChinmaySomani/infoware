@@ -1,6 +1,10 @@
 var router = require('express').Router();
 var index = require('../controllers/admin.controller.js');
 
+router.post('/admin/register', index.adminRegister);
+
+router.post('/admin/login', index.adminLogin);
+
 router.get('/farmer/get/all/medicinalCrops', index.allMedicinalCrops);
 
 router.get('/admin/all/buyers', index.allBuyers);
