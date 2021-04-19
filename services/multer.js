@@ -6,15 +6,15 @@ const path = require( 'path' );
 
 // Aws constants
 const s3 = new aws.S3({
-    accessKeyId: "AKIATCO2IC2GFNKPCZMM",
-    secretAccessKey: "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",
-    Bucket: "infowarefarmerportal"
+    accessKeyId: process.env.AWS_ACCESS_ID,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+    Bucket: process.env.AWS_BUCKET_NAME
    });
 
 const fileUpload = multer({
     storage: multerS3({
      s3: s3,
-     bucket: "infowarefarmerportal",
+     bucket: process.env.AWS_BUCKET_NAME,
      acl: 'private',
      key: function (req, file, cb) {
       cb(null, path.basename( file.originalname, path.extname( file.originalname ) ) + '-' + Date.now() + path.extname( file.originalname ) )
