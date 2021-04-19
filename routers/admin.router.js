@@ -5,6 +5,10 @@ router.post('/admin/register', index.adminRegister);
 
 router.post('/admin/login', index.adminLogin);
 
+router.get('/admin/get/data/farmer/:farmer_id/form/:form_no', index.getFData);
+
+router.get('/admin/get/data/buyer/:buyer_id/form/:form_no', index.getBData);
+
 router.get('/farmer/get/all/medicinalCrops', index.allMedicinalCrops);
 
 router.get('/admin/all/buyers', index.allBuyers);
