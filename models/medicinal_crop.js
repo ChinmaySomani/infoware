@@ -8,7 +8,12 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.INTEGER
         },
          
-        medicinal_crop_name: {
+        english_name: {
+            type: Sequelize.TEXT,
+            allowNull: false
+        },
+
+        gujrati_name: {
             type: Sequelize.TEXT,
             allowNull: false
         },

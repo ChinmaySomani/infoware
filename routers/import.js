@@ -4,19 +4,20 @@ const excelToJson = require('convert-excel-to-json');
 
 router.get("/importMedicinalCropsFromExcel",async (req,res)=>{
     const result = excelToJson({
-        sourceFile: 'medicinal_crops.xlsx'
+        sourceFile: 'medicinal_crops-ok.xlsx'
     });
     // console.log(result.Location);
     const array = result.s;
     for(var i=0;i<array.length;i++){
-        const medicinal_crop= await models.medicinal_crop.findOne({where:{"medicinal_crop_name":array[i].A}});
+        const medicinal_crop= await models.medicinal_crop.findOne({where:{"english_name":array[i].B}});
         if(medicinal_crop){
             console.log("Medicinal Crop already present in database");
             // break;
         }
         else{
             const obj={
-                "medicinal_crop_name": array[i].A,
+                "english_name": array[i].B,
+                "gujrati_name": array[i].A
             }
             const new_medicinal_crop= await models.medicinal_crop.create(obj);
             new_medicinal_crop.save();
