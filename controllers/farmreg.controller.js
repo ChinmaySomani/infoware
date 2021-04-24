@@ -83,7 +83,7 @@ exports.reg1p = function (req, res){
         console.log(array);
         let modelId;
         for(var i=0;i<array.length;i++){
-            if(array[i].userid==pid){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
                 modelId=array[i].farmerpID;
                 models.fpdetails.update(fpd,{where:{"farmerpID": modelId}});
                 console.log("Updated successfully");
@@ -121,23 +121,6 @@ exports.reg1p = function (req, res){
         });
     })
     
-    // models.fpdetails.create(fpd)
-    // .then(function(result){
-    //     console.log(result);
-    //     return res.status(200).json({
-    //         status: "success",
-    //         message: "Successfully filled the details!!",
-    //         data: result,
-    //     });
-    // }).catch(error => {
-    //     console.log(error);
-    //     return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    // });
-    
 }
 
 exports.reg2p = function(req, res){
@@ -154,7 +137,7 @@ exports.reg2p = function(req, res){
         console.log(array);
         let modelId;
         for(var i=0;i<array.length;i++){
-            if(array[i].userid==pid){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
                 modelId=array[i].plant_id;
                 models.plantg.update(fpd,{where:{"plant_id": modelId}});
                 console.log("Updated successfully");
@@ -192,22 +175,6 @@ exports.reg2p = function(req, res){
         });
     })
 
-    // models.plantg.create(fpd)
-    // .then(function(result){
-    //     console.log(result);
-    //     return res.status(200).json({
-    //         status: "success",
-    //         message: "Successfully filled the details!!",
-    //         data: result,
-    //     });
-    // }).catch(error => {
-    //     console.log(error);
-    //     return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    // });
 }
 
 exports.reg3p =  function(req, res){
@@ -224,7 +191,7 @@ exports.reg3p =  function(req, res){
         console.log(array);
         let modelId;
         for(var i=0;i<array.length;i++){
-            if(array[i].userid==pid){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
                 modelId=array[i].valueadd_id;
                 models.valueadd.update(fpd,{where:{"valueadd_id": modelId}});
                 console.log("Updated successfully");
@@ -262,22 +229,6 @@ exports.reg3p =  function(req, res){
         });
     })
 
-    // models.valueadd.create(fpd)
-    //   .then(function(result){
-    //       console.log(result);
-    //       return res.status(200).json({
-    //         status: "success",
-    //         message: "Successfully filled the details!!",
-    //         data: result,
-    //     });
-    //   }).catch(error => {
-    //       console.log(error);
-    //       return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    //   });
 }
 
 exports.reg4p = function(req, res){
@@ -313,7 +264,7 @@ exports.reg4p = function(req, res){
         console.log(array);
         let modelId;
         for(var i=0;i<array.length;i++){
-            if(array[i].userid==pid){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
                 modelId=array[i].organic_id;
                 models.organic.update(fpd,{where:{"organic_id": modelId}});
                 console.log("Updated successfully");
@@ -351,22 +302,6 @@ exports.reg4p = function(req, res){
         });
     })
 
-    // models.organic.create(fpd)
-    // .then(function(result){
-    //     console.log(result);
-    //     return res.status(200).json({
-    //         status: "success",
-    //         message: "Successfully filled the details!!",
-    //         data: result,
-    //     });
-    // }).catch(error => {
-    //     console.log(error);
-    //     return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    // });
 }
 
 exports.reg5p = function(req, res){
@@ -396,7 +331,7 @@ exports.reg5p = function(req, res){
         console.log(array);
         let modelId;
         for(var i=0;i<array.length;i++){
-            if(array[i].userid==pid){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
                 modelId=array[i].farmbuyer_id;
                 models.farmbuyer.update(fpd,{where:{"farmbuyer_id": modelId}});
                 console.log("Updated successfully");
@@ -434,22 +369,6 @@ exports.reg5p = function(req, res){
         });
     })
 
-    // models.farmbuyer.create(fpd)
-    // .then(function(result){
-    //     console.log(result);
-    //     return res.status(200).json({
-    //         status: "success",
-    //         message: "Successfully filled the details!!",
-    //         data: result,
-    //     });
-    // }).catch(error => {
-    //     console.log(error);
-    //     return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    // });
 }
 
 exports.reg6p = function(req, res){
@@ -465,7 +384,7 @@ exports.reg6p = function(req, res){
         console.log(array);
         let modelId;
         for(var i=0;i<array.length;i++){
-            if(array[i].userid===pid){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
                 modelId=array[i].problem_id;
                 models.problem.update(fpd,{where:{"problem_id": modelId}});
                 console.log("Updated successfully");
@@ -503,22 +422,6 @@ exports.reg6p = function(req, res){
         });
     })
 
-    // models.problem.create(fpd)
-    // .then(function(result){
-    //     console.log(result);
-    //     return res.status(200).json({
-    //         status: "success",
-    //         message: "Successfully filled the details!!",
-    //         data: result,
-    //     });
-    // }).catch(error => {
-    //     console.log(error);
-    //     return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    // });
 }
 
 exports.reg7p = function(req, res){
@@ -535,7 +438,7 @@ exports.reg7p = function(req, res){
         console.log(array);
         let modelId;
         for(var i=0;i<array.length;i++){
-            if(array[i].userid===pid){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
                 modelId=array[i].exp_id;
                 models.experiment.update(fpd,{where:{"exp_id": modelId}});
                 console.log("Updated successfully");
@@ -573,22 +476,6 @@ exports.reg7p = function(req, res){
         });
     })
 
-    // models.experiment.create(fpd)
-    // .then(function(result){
-    //     console.log(result);
-    //     return res.status(200).json({
-    //         status: "success",
-    //         message: "Successfully filled the details!!",
-    //         data: result,
-    //     });
-    // }).catch(error => {
-    //     console.log(error);
-    //     return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    // });
 }
 
 exports.reg8p = function(req, res){
@@ -604,7 +491,7 @@ exports.reg8p = function(req, res){
         console.log(array);
         let modelId;
         for(var i=0;i<array.length;i++){
-            if(array[i].userid==pid){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
                 modelId=array[i].fc_id;
                 models.futureplant.update(fpd,{where:{"fc_id": modelId}});
                 console.log("Updated successfully");
@@ -642,22 +529,6 @@ exports.reg8p = function(req, res){
         });
     })
 
-    // models.futureplant.create(fpd)
-    // .then(function(result){
-    //     console.log(result);
-    //     return res.status(200).json({
-    //         status: "success",
-    //         message: "Successfully filled the details!!",
-    //         data: result,
-    //     });
-    // }).catch(error => {
-    //     console.log(error);
-    //     return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    // });
 }
 
 exports.reg9p = function(req, res){
@@ -693,7 +564,7 @@ exports.reg9p = function(req, res){
         console.log(array);
         let modelId;
         for(var i=0;i<array.length;i++){
-            if(array[i].userid==pid){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
                 modelId=array[i].nf_id;
                 models.nearbyfarmer.update(fpd,{where:{"nf_id": modelId}});
                 console.log("Updated successfully");
@@ -731,22 +602,6 @@ exports.reg9p = function(req, res){
         });
     })
 
-    // models.nearbyfarmer.create(fpd)
-    // .then(function(result){
-    //     console.log(result);
-    //     return res.status(200).json({
-    //         status: "success",
-    //         message: "Successfully filled the details!!",
-    //         data: result,
-    //     });
-    // }).catch(error => {
-    //     console.log(error);
-    //     return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    // });
 }
 
 exports.reg10p = function(req, res){
@@ -779,7 +634,7 @@ exports.reg10p = function(req, res){
             console.log(pid);
             console.log(array[i].userid+"\n")
             const id=array[i].userid+"\n";
-            if(id==pid){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
                 modelId=array[i].dof_id;
                 models.dof.update(fpd,{where:{"dof_id": modelId}});
                 console.log("Updated successfully");
@@ -816,23 +671,7 @@ exports.reg10p = function(req, res){
             data: null,
         });
     })
-
-    // models.dof.create(fpd)
-    // .then(function(result){
-    //     console.log(result);
-    //     return res.status(200).json({
-    //         status: "success",
-    //         message: "Successfully filled the details!!",
-    //         data: result,
-    //     });
-    // }).catch(error => {
-    //     console.log(error);
-    //     return res.status(400).json({
-    //         status: "failure",
-    //         message: "Some error ocurred!",
-    //         data: null,
-    //     });
-    // });
+    
 }
 
 exports.memF = function(req, res){
