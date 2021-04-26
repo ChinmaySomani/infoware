@@ -27,7 +27,11 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.TEXT
         },
 
-        village1 : {
+        village_name: { 
+            type: Sequelize.TEXT
+        },
+
+        village1 : {   //used as state1 (needs correction)
             type: Sequelize.TEXT
         },
 
@@ -71,7 +75,7 @@ module.exports = function(sequelize, Sequelize) {
             type : Sequelize.BIGINT
         },
 
-        village2 : {
+        village2 : {   //used as state2 (needs correction)
             type: Sequelize.TEXT
         },
 
