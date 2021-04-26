@@ -43,6 +43,10 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.TEXT
         },
 
+        area : {
+            type: Sequelize.TEXT
+        },
+
         pin_code : {
             type: Sequelize.BIGINT
         },

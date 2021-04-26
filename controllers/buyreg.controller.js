@@ -1,6 +1,105 @@
 var models = require('../models');
 var exports = module.exports = {}
 
+exports.bWebp = function (req, res){
+    
+    if(typeof req.body.name!="string" && req.body.name){
+        return res.status(400).json({
+            status: "failure",
+            message: "Name must be alphabets",
+        });
+    }
+    if(typeof req.body.surname!="string" && req.body.surname){
+        return res.status(400)
+        .json({
+            status: "failure",
+            message: "Surname must be alphabets",
+        });
+    }
+    if(typeof req.body.father_or_husband_name!="string" && req.body.father_or_husband_name){
+        return res.status(400).json({
+            status: "failure",
+            message: "Father/Husband Name must be alphabets",
+        });
+    }
+    if((typeof req.body.phone!="number" || (req.body.phone).toString().length!=10) && req.body.phone){
+        return res.status(400).json({
+            status: "failure",
+            message: "Phone must be number & length must be 10",
+        });
+    }
+    if((typeof req.body.mobile!="number" || (req.body.mobile).toString().length!=10) && req.body.mobile){
+        return res.status(400).json({
+            status: "failure",
+            message: "Mobile must be number & length must be 10",
+        });
+    }
+    if((typeof req.body.whatsApp!="number" || (req.body.whatsApp).toString().length!=10) && req.body.whatsApp){
+        return res.status(400).json({
+            status: "failure",
+            message: "Whatsapp must be number & length must be 10",
+        });
+    }
+    if((typeof req.body.telegram!="number" || (req.body.telegram).toString().length!=10) && req.body.telegram){
+        return res.status(400).json({
+            status: "failure",
+            message: "Telegram must be number & length must be 10",
+        });
+    }
+    
+    var fpd = req.body;
+    var pid = req.params.id;
+    fpd.userid = pid;
+    
+    var array=[];
+    models.buyer_webinar_form.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
+                modelId=array[i].buyerWebinarFormID;
+                models.buyer_webinar_form.update(fpd,{where:{"buyerWebinarFormID": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.buyer_webinar_form.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
+        });
+
+    }).catch(error=>{
+        console.log(error);
+        return res.status(400).json({
+            status: "failure",
+            message: "Some error ocurred!",
+            data: null,
+        });
+    })
+    
+}
+
+
 exports.reg1p = function(req, res){
     
     if(typeof req.body.name!="string" && req.body.name){

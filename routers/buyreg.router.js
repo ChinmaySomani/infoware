@@ -1,6 +1,8 @@
 var router = require('express').Router();
 var index = require('../controllers/buyreg.controller.js');
 
+router.post('/buyer/webinar/form/:id', index.bWebp);
+
 router.post('/register/buyer/1/:id', index.reg1p);
 
 router.post('/register/buyer/2/:id', index.reg2p);
