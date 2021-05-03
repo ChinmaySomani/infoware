@@ -40,14 +40,16 @@ module.exports = function(sequelize, Sequelize) {
             allowNull: false
         },
 
+        last_login: {
+            type: Sequelize.DATE,
+        },
+
         membership_id: {
-            // type: Sequelize.INTEGER,
             type: Sequelize.UUID,
-            // references: {
-            //   model: 'membership', // Can be both a string representing the table name or a Sequelize model
-            //   key: 'id'
-            // },
-            defaultValue: -1
+            references: {
+              model: 'membership', // Can be both a string representing the table name or a Sequelize model
+              key: 'ms_id'
+            },
         }
     });
  

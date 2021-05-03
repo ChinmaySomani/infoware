@@ -77,6 +77,10 @@ module.exports = function(passport, user) {
                 {
  
                     var userPassword = generateHash(password);
+
+                    // updating current date & time
+                    const curr_date= new Date();
+                    console.log(curr_date);
  
                     var data =
  
@@ -91,7 +95,9 @@ module.exports = function(passport, user) {
  
                             password: userPassword,
  
-                            type: req.body.type
+                            type: req.body.type,
+
+                            last_login: curr_date
                         };
  
                     User.create(data).then(function(newUser, created) {
@@ -181,6 +187,11 @@ passport.use('local-signin', new LocalStrategy(
                     message: "User type does not match!! Can't login"
                 });
             }
+
+            // updating current date & time
+            const curr_date= new Date();
+            console.log(curr_date);
+            userinfo.last_login=curr_date;
  
             console.log("You are successfully signed in");
 
