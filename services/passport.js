@@ -191,7 +191,8 @@ passport.use('local-signin', new LocalStrategy(
             // updating current date & time
             const curr_date= new Date();
             console.log(curr_date);
-            userinfo.last_login=curr_date;
+            user.last_login=curr_date;
+            user.save();
  
             console.log("You are successfully signed in");
 
