@@ -7,17 +7,17 @@ router.get('/location/get/all/districts', index.allDistricts);
 
 router.get('/location/get/all/talukas', index.allTalukas);
 
-router.get('/location/get/all/areas', index.allAreas);
+router.get('/location/get/all/villages', index.allVillages);
 
-router.get('/location/get/all/pincode', index.allPincode);
+router.get('/location/get/all/village_code', index.allVillageCode);
 
 router.get('/location/state/:stateId/get/districts', index.getDistrictsOfState);
 
 router.get('/location/district/:districtId/get/talukas', index.getTalukasOfDistrict);
 
-router.get('/location/taluka/:talukaId/get/areas', index.getAreasOfTaluka);
+router.get('/location/taluka/:talukaId/get/villages', index.getVilagesOfTaluka);
 
-router.get('/location/area/:areaId/get/pincode', index.getPincodeOfArea);
+router.get('/location/village/:villageId/get/village_code', index.getVillageCodeOfVillage);
 
 
 module.exports = router;

@@ -67,15 +67,15 @@ exports.allTalukas = function(req, res){
     });
 }
 
-exports.allAreas = function(req, res){
-    models.area.findAll({
+exports.allVillages = function(req, res){
+    models.village.findAll({
         where: {}
     })
     .then(function(result){
         console.log(result);
         return res.status(200).json({
             status: "success",
-            message: "List of all areas are below!!",
+            message: "List of all villages are below!!",
             total: result.length,
             data: result,
         });
@@ -89,15 +89,15 @@ exports.allAreas = function(req, res){
     });
 }
 
-exports.allPincode = function(req, res){
-    models.pincode.findAll({
+exports.allVillageCode = function(req, res){
+    models.village_code.findAll({
         where: {}
     })
     .then(function(result){
         console.log(result);
         return res.status(200).json({
             status: "success",
-            message: "List of all pincode are below!!",
+            message: "List of all village codes are below!!",
             total: result.length,
             data: result,
         });
@@ -157,16 +157,16 @@ exports.getTalukasOfDistrict = function(req, res){
     });
 }
 
-exports.getAreasOfTaluka = function(req, res){
+exports.getVilagesOfTaluka = function(req, res){
     let taluka_id=req.params.talukaId;
-    models.area.findAll({
+    models.village.findAll({
         where: {talukaId: taluka_id}
     })
     .then(function(result){
         console.log(result);
         return res.status(200).json({
             status: "success",
-            message: "List of all areas of given taluka are below!!",
+            message: "List of all villages of given taluka are below!!",
             total: result.length,
             data: result,
         });
@@ -181,16 +181,16 @@ exports.getAreasOfTaluka = function(req, res){
 }
 
 
-exports.getPincodeOfArea = function(req, res){
-    let area_id=req.params.areaId;
-    models.pincode.findAll({
-        where: {areaId: area_id}
+exports.getVillageCodeOfVillage = function(req, res){
+    let village_id=req.params.villageId;
+    models.village_code.findAll({
+        where: {villageId: village_id}
     })
     .then(function(result){
         console.log(result);
         return res.status(200).json({
             status: "success",
-            message: "Pincode of given area is below!!",
+            message: "Village Code of given village is below!!",
             data: result,
         });
     }).catch(error => {

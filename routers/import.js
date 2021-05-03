@@ -43,19 +43,19 @@ router.get("/importCountryFromExcel",async (req,res)=>{
 
 router.get("/importStateFromExcel",async (req,res)=>{
     const result = excelToJson({
-        sourceFile: 'sample.xlsx'
+        sourceFile: 'Sample Village Data For Farmer portal.xlsx'
     });
     // console.log(result.Location);
-    const array = result.s;
+    const array = result.Sheet1;
     for(var i=0;i<array.length;i++){
-        const state= await models.state.findOne({where:{"state_name":array[i].E}});
+        const state= await models.state.findOne({where:{"state_name":array[i].A}});
         if(state){
             console.log("State already present in database");
             // break;
         }
         else{
             const obj={
-                "state_name": array[i].E,
+                "state_name": array[i].A,
                 "countryId": 1
             }
             const new_state= await models.state.create(obj);
@@ -598,6 +598,172 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
                         }
                         else{
                             console.log("PinCode already exists!!");
+                        }
+                    }
+            }
+        }
+    }
+    console.log("All entries in excel sheet has been added to database");
+});
+
+
+router.get("/importVillageCodeFromExcel",async (req,res)=>{
+    const result = excelToJson({
+        sourceFile: 'Sample Village Data For Farmer portal.xlsx'
+    });
+    // console.log(result.Location);
+    const array = result.Sheet1;
+    for(var i=0;i<array.length;i++){
+            const district_array= await models.district.findAll({where:{"district_name":array[i].B}});
+            const state= await models.state.findOne({where:{"state_name":array[i].A}});
+            let real_d_id;
+            let real_s_id=state.state_id;
+            let real_t_id;
+            let real_a_id;
+            let ifFound=0;
+            for(var j=0;j<district_array.length;j++){
+                if(district_array[j].stateId==real_s_id){
+                    ifFound=1;
+                    real_d_id=district_array[j].district_id;
+                    break;
+                }
+            }
+            if(ifFound==0){
+                const obj={
+                    "district_name": array[i].B,
+                    "stateId": real_s_id,
+                    "countryId": 1
+                }
+                const new_district= await models.district.create(obj);
+                new_district.save();
+                const obj2={
+                    "taluka_name": array[i].C,
+                    "districtId": new_district.district_id,
+                    "stateId": real_s_id,
+                    "countryId": 1
+                }
+                const new_taluka= await models.taluka.create(obj2);
+                new_taluka.save();
+                const obj3={
+                    "village_name": array[i].D,
+                    "village_code": array[i].E,
+                    "talukaId": new_taluka.taluka_id,
+                    "districtId": new_district.district_id,
+                    "stateId": real_s_id,
+                    "countryId": 1
+                }
+                const new_village= await models.village.create(obj3);
+                new_village.save();
+                const obj4={
+                    "village_code": array[i].E,
+                    "villageId": new_village.village_id,
+                    "talukaId": new_taluka.taluka_id,
+                    "districtId": new_district.district_id,
+                    "stateId": real_s_id,
+                    "countryId": 1
+                }
+                const new_village_code= await models.village_code.create(obj4);
+                new_village_code.save();
+                console.log("New Village Code added!!");
+            }
+            else{
+                const taluka_array= await models.taluka.findAll({where:{"taluka_name":array[i].C}});
+                let ifFound2=0;
+                for(var j=0;j<taluka_array.length;j++){
+                    if(taluka_array[j].districtId==real_d_id && taluka_array[j].stateId==real_s_id){
+                        ifFound2=1;
+                        real_t_id=taluka_array[j].taluka_id;
+                        break;
+                    }
+                }
+                if(ifFound2==0){
+                    const obj2={
+                        "taluka_name": array[i].C,
+                        "districtId": real_d_id,
+                        "stateId": real_s_id,
+                        "countryId": 1
+                    }
+                    const new_taluka= await models.taluka.create(obj2);
+                    new_taluka.save();
+                    const obj3={
+                        "village_name": array[i].D,
+                        "village_code": array[i].E,
+                        "talukaId": new_taluka.taluka_id,
+                        "districtId": real_d_id,
+                        "stateId": real_s_id,
+                        "countryId": 1
+                    }
+                    const new_village= await models.village.create(obj3);
+                    new_village.save();
+                    const obj4={
+                        "village_code": array[i].E,
+                        "villageId": new_village.village_id,
+                        "talukaId": new_taluka.taluka_id,
+                        "districtId": real_d_id,
+                        "stateId": real_s_id,
+                        "countryId": 1
+                    }
+                    const new_village_code= await models.village_code.create(obj4);
+                    new_village_code.save();
+                    console.log("New Village Code added!!");
+                }
+                else{
+                    const village_array= await models.village.findAll({where:{"village_name":array[i].D}});
+                    let ifFound3=0;
+                    for(var j=0;j<village_array.length;j++){
+                        if(village_array[j].talukaId==real_t_id && village_array[j].districtId==real_d_id && village_array[j].stateId==real_s_id){
+                            ifFound3=1;
+                            real_a_id=village_array[j].village_id;
+                            break;
+                        }
+                    }
+                    if(ifFound3==0){
+                        const obj3={
+                            "village_name": array[i].D,
+                            "village_code": array[i].E,
+                            "talukaId": real_t_id,
+                            "districtId": real_d_id,
+                            "stateId": real_s_id,
+                            "countryId": 1
+                        }
+                        const new_village= await models.village.create(obj3);
+                        new_village.save();
+                        const obj4={
+                            "village_code": array[i].E,
+                            "villageId": new_village.village_id,
+                            "talukaId": real_t_id,
+                            "districtId": real_d_id,
+                            "stateId": real_s_id,
+                            "countryId": 1
+                        }
+                        const new_village_code= await models.village_code.create(obj4);
+                        new_village_code.save();
+                        console.log("New Village Code added!!");  
+                    }
+                    else{
+                        const village_code_array= await models.village_code.findAll({where:{"village_code":array[i].E}});
+                        let ifFound4=0;
+                        for(var j=0;j<village_code_array.length;j++){
+                            if(village_code_array[j].villageId==real_a_id && village_code_array[j].talukaId==real_t_id && village_code_array[j].districtId==real_d_id && village_code_array[j].stateId==real_s_id){
+                                ifFound4=1;
+                                break;
+                            }
+                        }
+                        if(ifFound4==0){
+                            const obj4={
+                                "village_code": array[i].E,
+                                "villageId": real_a_id,
+                                "talukaId": real_t_id,
+                                "districtId": real_d_id,
+                                "stateId": real_s_id,
+                                "countryId": 1
+                            }
+                            const new_village_code= await models.village_code.create(obj4);
+                            new_village_code.save();
+                            console.log("New Village Code added!!");
+                        }
+                        else{
+                            console.log("Village Code already exists!!");
                         }
                     }
             }
