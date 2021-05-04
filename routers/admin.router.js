@@ -11,6 +11,8 @@ router.get('/admin/get/data/buyer/:buyer_id/form/:form_no', index.getBData);
 
 router.get('/farmer/get/all/medicinalCrops', index.allMedicinalCrops);
 
+router.get('/farmer/get/all/usefulPartsOfPlants', index.allUsefulParts);
+
 router.get('/admin/all/buyers', index.allBuyers);
 
 router.get('/admin/all/farmers', index.allFarmers);

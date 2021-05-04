@@ -135,6 +135,28 @@ exports.getBData = async function(req, res){
     });
 }
 
+exports.allUsefulParts = function(req, res){
+    models.useful_part_of_plants.findAll({
+        where: {}
+    })
+    .then(function(result){
+        console.log(result);
+        return res.status(200).json({
+            status: "success",
+            message: "List of all useful parts of plants are below!!",
+            total: result.length,
+            data: result,
+        });
+    }).catch(error => {
+        console.log(error);
+        return res.status(400).json({
+            status: "failure",
+            message: "Some error ocurred!",
+            data: null,
+        });
+    });
+}
+
 
 exports.allMedicinalCrops = function(req, res){
     models.medicinal_crop.findAll({

@@ -2,6 +2,34 @@ var router = require('express').Router();
 var models = require('../models');
 const excelToJson = require('convert-excel-to-json');
 
+
+router.get("/importUsefulPartOfPlantsFromExcel",async (req,res)=>{
+    const result = excelToJson({
+        sourceFile: 'List of useful part of plant.xlsx'
+    });
+    // console.log(result.Location);
+    const array = result.Sheet1;
+    for(var i=0;i<array.length;i++){
+        const useful_part= await models.useful_part_of_plants.findOne({where:{"english_name":array[i].B}});
+        if(useful_part){
+            console.log("Useful part of plant already present in database");
+            // break;
+        }
+        else{
+            const obj={
+                "english_name": array[i].B,
+                "gujrati_name": array[i].A
+            }
+            const new_useful_part= await models.useful_part_of_plants.create(obj);
+            new_useful_part.save();
+            console.log("Successfully filled the details!!");
+            // break;
+        }
+    }
+    console.log("All entries of Useful Part of Plants in excel sheet have been added to database");
+});
+
+
 router.get("/importMedicinalCropsFromExcel",async (req,res)=>{
     const result = excelToJson({
         sourceFile: 'medicinal_crops-ok.xlsx'
