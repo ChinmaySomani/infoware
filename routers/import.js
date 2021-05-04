@@ -471,13 +471,13 @@ router.get("/importAreaFromExcel",async (req,res)=>{
 
 router.get("/importPinCodeFromExcel",async (req,res)=>{
     const result = excelToJson({
-        sourceFile: 'sample.xlsx'
+        sourceFile: 'Sample Village Data For Farmer portal with area & pincode.xlsx'
     });
     // console.log(result.Location);
-    const array = result.s;
+    const array = result.Sheet2;
     for(var i=0;i<array.length;i++){
-            const district_array= await models.district.findAll({where:{"district_name":array[i].D}});
-            const state= await models.state.findOne({where:{"state_name":array[i].E}});
+            const district_array= await models.district.findAll({where:{"district_name":array[i].B}});
+            const state= await models.state.findOne({where:{"state_name":array[i].A}});
             let real_d_id;
             let real_s_id=state.state_id;
             let real_t_id;
@@ -492,7 +492,7 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
             }
             if(ifFound==0){
                 const obj={
-                    "district_name": array[i].D,
+                    "district_name": array[i].B,
                     "stateId": real_s_id,
                     "countryId": 1
                 }
@@ -507,8 +507,8 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
                 const new_taluka= await models.taluka.create(obj2);
                 new_taluka.save();
                 const obj3={
-                    "area_name": array[i].A,
-                    "pincode": array[i].B,
+                    "area_name": array[i].D,
+                    "pincode": array[i].E,
                     "talukaId": new_taluka.taluka_id,
                     "districtId": new_district.district_id,
                     "stateId": real_s_id,
@@ -517,7 +517,7 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
                 const new_area= await models.area.create(obj3);
                 new_area.save();
                 const obj4={
-                    "pincode_no": array[i].B,
+                    "pincode_no": array[i].E,
                     "areaId": new_area.area_id,
                     "talukaId": new_taluka.taluka_id,
                     "districtId": new_district.district_id,
@@ -548,8 +548,8 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
                     const new_taluka= await models.taluka.create(obj2);
                     new_taluka.save();
                     const obj3={
-                        "area_name": array[i].A,
-                        "pincode": array[i].B,
+                        "area_name": array[i].D,
+                        "pincode": array[i].E,
                         "talukaId": new_taluka.taluka_id,
                         "districtId": real_d_id,
                         "stateId": real_s_id,
@@ -558,7 +558,7 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
                     const new_area= await models.area.create(obj3);
                     new_area.save();
                     const obj4={
-                        "pincode_no": array[i].B,
+                        "pincode_no": array[i].E,
                         "areaId": new_area.area_id,
                         "talukaId": new_taluka.taluka_id,
                         "districtId": real_d_id,
@@ -570,7 +570,7 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
                     console.log("New PinCode added!!");
                 }
                 else{
-                    const area_array= await models.area.findAll({where:{"area_name":array[i].A}});
+                    const area_array= await models.area.findAll({where:{"area_name":array[i].D}});
                     let ifFound3=0;
                     for(var j=0;j<area_array.length;j++){
                         if(area_array[j].talukaId==real_t_id && area_array[j].districtId==real_d_id && area_array[j].stateId==real_s_id){
@@ -581,8 +581,8 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
                     }
                     if(ifFound3==0){
                         const obj3={
-                            "area_name": array[i].A,
-                            "pincode": array[i].B,
+                            "area_name": array[i].D,
+                            "pincode": array[i].E,
                             "talukaId": real_t_id,
                             "districtId": real_d_id,
                             "stateId": real_s_id,
@@ -591,7 +591,7 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
                         const new_area= await models.area.create(obj3);
                         new_area.save();
                         const obj4={
-                            "pincode_no": array[i].B,
+                            "pincode_no": array[i].E,
                             "areaId": new_area.area_id,
                             "talukaId": real_t_id,
                             "districtId": real_d_id,
@@ -603,7 +603,7 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
                         console.log("New PinCode added!!");  
                     }
                     else{
-                        const pincode_array= await models.pincode.findAll({where:{"pincode_no":array[i].B}});
+                        const pincode_array= await models.pincode.findAll({where:{"pincode_no":array[i].E}});
                         let ifFound4=0;
                         for(var j=0;j<pincode_array.length;j++){
                             if(pincode_array[j].areaId==real_a_id && pincode_array[j].talukaId==real_t_id && pincode_array[j].districtId==real_d_id && pincode_array[j].stateId==real_s_id){
@@ -613,7 +613,7 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
                         }
                         if(ifFound4==0){
                             const obj4={
-                                "pincode_no": array[i].B,
+                                "pincode_no": array[i].E,
                                 "areaId": real_a_id,
                                 "talukaId": real_t_id,
                                 "districtId": real_d_id,

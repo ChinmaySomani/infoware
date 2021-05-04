@@ -67,6 +67,28 @@ exports.allTalukas = function(req, res){
     });
 }
 
+exports.allArea = function(req, res){
+    models.area.findAll({
+        where: {}
+    })
+    .then(function(result){
+        console.log(result);
+        return res.status(200).json({
+            status: "success",
+            message: "List of all area are below!!",
+            total: result.length,
+            data: result,
+        });
+    }).catch(error => {
+        console.log(error);
+        return res.status(400).json({
+            status: "failure",
+            message: "Some error ocurred!",
+            data: null,
+        });
+    });
+}
+
 exports.allVillages = function(req, res){
     models.village.findAll({
         where: {}
@@ -145,6 +167,51 @@ exports.getTalukasOfDistrict = function(req, res){
             status: "success",
             message: "List of all talukas of given district are below!!",
             total: result.length,
+            data: result,
+        });
+    }).catch(error => {
+        console.log(error);
+        return res.status(400).json({
+            status: "failure",
+            message: "Some error ocurred!",
+            data: null,
+        });
+    });
+}
+
+exports.getAreaOfTaluka = function(req, res){
+    let taluka_id=req.params.talukaId;
+    models.area.findAll({
+        where: {talukaId: taluka_id}
+    })
+    .then(function(result){
+        console.log(result);
+        return res.status(200).json({
+            status: "success",
+            message: "List of all areas of given taluka are below!!",
+            total: result.length,
+            data: result,
+        });
+    }).catch(error => {
+        console.log(error);
+        return res.status(400).json({
+            status: "failure",
+            message: "Some error ocurred!",
+            data: null,
+        });
+    });
+}
+
+exports.getPincodeOfArea = function(req, res){
+    let area_id=req.params.areaId;
+    models.pincode.findAll({
+        where: {areaId: area_id}
+    })
+    .then(function(result){
+        console.log(result);
+        return res.status(200).json({
+            status: "success",
+            message: "Pincode of given area is below!!",
             data: result,
         });
     }).catch(error => {
