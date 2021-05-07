@@ -69,7 +69,8 @@ module.exports = function(passport, user) {
  
                     console.log("Username already exists. Can't create the user with same mobile number");
                     return done(null, false, {
-                        message: "Username already exists. Can't create the user with same mobile number"
+                        message: "Username already exists. Can't create the user with same mobile number",
+                        gujrati_message: "વપરાશકર્તા નામ પહેલેથી જ અસ્તિત્વમાં છે. સમાન મોબાઇલ નંબરવાળા વપરાશકર્તા બનાવી શકતા નથી"
                     });
  
                 } else
@@ -106,7 +107,8 @@ module.exports = function(passport, user) {
  
                             console.log("Can't able to create the new user. Some error occurred from database");
                             return done(null, false,{
-                                message: "Can't able to create the new user. Some error occurred from database"
+                                message: "Can't able to create the new user. Some error occurred from database",
+                                gujrati_message: "નવો વપરાશકર્તા બનાવવામાં સક્ષમ નથી. ડેટાબેઝમાંથી થોડી ભૂલ આવી"
                             });
  
                         }
@@ -165,7 +167,8 @@ passport.use('local-signin', new LocalStrategy(
  
                 console.log("Username does not exists. Signup first with valid mobile no");
                 return done(null, false, {
-                    message: "Username does not exists. Signup first with valid mobile no"
+                    message: "Username does not exists. Signup first with valid mobile no",
+                    gujrati_message: "આ નામ રજીસ્ટર્ડ નથી, મોબાઈલ નંબરથી રજીસ્ટર્ડ કરો"
                 });
  
             }
@@ -174,7 +177,8 @@ passport.use('local-signin', new LocalStrategy(
  
                 console.log("Incorrect Password. Enter correct password");
                 return done(null, false, {
-                    message: "Incorrect Password. Enter correct password"
+                    message: "Incorrect Password. Enter correct password",
+                    gujrati_message: "પાસવર્ડ ખોટો છે, સાચો પાસવર્ડ નાખો"
                 });
 
             }
@@ -184,7 +188,8 @@ passport.use('local-signin', new LocalStrategy(
             if(req.body.type!=userinfo.type){
                 console.log("User type does not match!! Can't login");
                 return done(null, false, {
-                    message: "User type does not match!! Can't login"
+                    message: "User type does not match!! Can't login",
+                    gujrati_message: "વપરાશકર્તાનો પ્રકાર સાચો નથી"
                 });
             }
 
@@ -205,7 +210,8 @@ passport.use('local-signin', new LocalStrategy(
  
             console.log("Some error occurred with your signin from database");
             return done(null, false, {
-                message: "Some error occurred with your signin from database"
+                message: "Some error occurred with your signin from database",
+                gujrati_message: "ડેટાબેઝમાંથી તમારા સાઇન ઇન સાથે થોડી ભૂલ આવી"
             });
 
         });

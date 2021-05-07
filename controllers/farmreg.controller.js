@@ -7,6 +7,7 @@ exports.reg1p = function (req, res){
         return res.status(400).json({
             status: "failure",
             message: "Name must be alphabets",
+            gujrati_message: "નામ મૂળાક્ષરો હોવા જોઈએ"
         });
     }
     if(typeof req.body.surname!="string" && req.body.surname){
@@ -14,42 +15,49 @@ exports.reg1p = function (req, res){
         .json({
             status: "failure",
             message: "Surname must be alphabets",
+            gujrati_message: "અટક શબ્દોમાં લખો"
         });
     }
     if(typeof req.body.father_or_husband_name!="string" && req.body.father_or_husband_name){
         return res.status(400).json({
             status: "failure",
             message: "Father/Husband Name must be alphabets",
+            gujrati_message: "પિતા/પતિનું નામ શબ્દોમાં લખો"
         });
     }
     if((typeof req.body.phone!="number" || (req.body.phone).toString().length!=10) && req.body.phone){
         return res.status(400).json({
             status: "failure",
             message: "Phone must be number & length must be 10",
+            gujrati_message: "10 અંકનો સાચો મોબાઈલ નંબર લખો"
         });
     }
     if((typeof req.body.mobile!="number" || (req.body.mobile).toString().length!=10) && req.body.mobile){
         return res.status(400).json({
             status: "failure",
             message: "Mobile must be number & length must be 10",
+            gujrati_message: "10 અંકનો સાચો મોબાઈલ નંબર લખો"
         });
     }
     if((typeof req.body.whatsApp!="number" || (req.body.whatsApp).toString().length!=10) && req.body.whatsApp){
         return res.status(400).json({
             status: "failure",
             message: "Whatsapp must be number & length must be 10",
+            gujrati_message: "વોટ્સએપ નંબર હોવો જોઈએ અને લંબાઈ 10 હોવી જ જોઇએ"
         });
     }
     if((typeof req.body.telegram!="number" || (req.body.telegram).toString().length!=10) && req.body.telegram){
         return res.status(400).json({
             status: "failure",
             message: "Telegram must be number & length must be 10",
+            gujrati_message: "ટેલિગ્રામ નંબર હોવો આવશ્યક છે અને લંબાઈ 10 હોવી આવશ્યક છે"
         });
     }
     if(typeof req.body.aadharno!="number" && req.body.aadharno){
         return res.status(400).json({
             status: "failure",
             message: "Aadhar No must be number",
+            gujrati_message: "આધાર નંબરમાં વચ્ચે જગ્યા આપ્યા વગર લખો"
         });
     }
     if(typeof req.body.land_revenue_record_no!="number" && req.body.land_revenue_record_no){

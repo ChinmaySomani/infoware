@@ -11,6 +11,7 @@ router.post('/login', function(req, res, next ){
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
+            gujrati_message: "થોડી ભૂલ થઈ",
             data: null,
         });
       }
@@ -18,12 +19,14 @@ router.post('/login', function(req, res, next ){
         return res.status(400).json({
             status: "failure",
             message: info.message,
+            gujrati_message: info.gujrati_message,
             data: null,
         });
       }
       return res.status(200).json({
         status: "success",
         message: "Successfully logged in !!",
+        gujrati_message: "સફળતાપૂર્વક લ inગ ઇન કર્યું !!",
         data: user,
         userId: user.id,
         type: user.type
@@ -39,6 +42,7 @@ router.post('/signup', function(req, res, next ){
         return res.status(400).json({
             status: "failure",
             message: "Some error ocurred!",
+            gujrati_message: "થોડી ભૂલ થઈ",
             data: null,
         });
       }
@@ -46,12 +50,14 @@ router.post('/signup', function(req, res, next ){
         return res.status(400).json({
             status: "failure",
             message: info.message,
+            gujrati_message: info.gujrati_message,
             data: null,
         });
       }
       return res.status(200).json({
         status: "success",
         message: "Successfully registered or logged in (if already registered)!!",
+        gujrati_message: "સફળતાપૂર્વક નોંધાયેલ",
         data: user,
         userId: user.id,
         type: user.type
@@ -63,6 +69,7 @@ router.get("/signup/failure",(req,res)=>{
     return res.status(400).json({
         status: "failure",
         message: "Some error ocurred!",
+        gujrati_message: "થોડી ભૂલ થઈ",
         data: null,
     });
 });

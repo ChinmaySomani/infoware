@@ -1,0 +1,31 @@
+Username already exists. Can't create the user with same mobile number
+Can't able to create the new user. Some error occurred from database
+Username does not exists. Signup first with valid mobile no
+Incorrect Password. Enter correct password
+User type does not match!! Can't login
+Some error occurred with your signin from database
+Some error ocurred!
+Successfully logged in !!
+Successfully registered or logged in (if already registered)!!
+Name must be alphabets
+Surname must be alphabets
+Father/Husband Name must be alphabets
+Phone must be number & length must be 10
+Mobile must be number & length must be 10
+Whatsapp must be number & length must be 10
+Telegram must be number & length must be 10
+Aadhar No must be number
+Land Revenue record no must be number
+Survey no must be number
+Acre must be number
+Successfully filled the details!!
+Name of organic farm must be alphabets
+Registration No must be number
+Lab test field must be string
+Name of Vendor must be alphabets
+Some error ocurred!
+Pincode must be number
+Name of company must be alphabets
+GST no must be number
+CIN no must be number
+Contact No must be number & length must be 10

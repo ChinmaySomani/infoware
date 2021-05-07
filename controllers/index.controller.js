@@ -8,6 +8,7 @@ exports.logout = function(req, res) {
         return res.status(200).json({
             status: "success",
             message: "Successfully logout!!",
+            gujarati_message: "સફળતાપૂર્વક લ logગઆઉટ !!",
             data: null,
         });
  
