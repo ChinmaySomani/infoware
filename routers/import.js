@@ -471,7 +471,7 @@ router.get("/importAreaFromExcel",async (req,res)=>{
 
 router.get("/importPinCodeFromExcel",async (req,res)=>{
     const result = excelToJson({
-        sourceFile: 'Sample Village Data For Farmer portal with area & pincode.xlsx'
+        sourceFile: 'Sample Village Data For Farmer portal.xlsx'
     });
     // console.log(result.Location);
     const array = result.Sheet2;
