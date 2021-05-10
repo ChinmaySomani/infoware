@@ -471,10 +471,10 @@ router.get("/importAreaFromExcel",async (req,res)=>{
 
 router.get("/importPinCodeFromExcel",async (req,res)=>{
     const result = excelToJson({
-        sourceFile: 'Sample Village Data For Farmer portal.xlsx'
+        sourceFile: 'Area PinCode for Gujarat.xlsx'
     });
     // console.log(result.Location);
-    const array = result.Sheet2;
+    const array = result.Sheet1;
     for(var i=0;i<array.length;i++){
             const district_array= await models.district.findAll({where:{"district_name":array[i].B}});
             const state= await models.state.findOne({where:{"state_name":array[i].A}});
@@ -482,6 +482,7 @@ router.get("/importPinCodeFromExcel",async (req,res)=>{
             let real_s_id=state.state_id;
             let real_t_id;
             let real_a_id;
+            
             let ifFound=0;
             for(var j=0;j<district_array.length;j++){
                 if(district_array[j].stateId==real_s_id){

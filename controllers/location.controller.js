@@ -1,12 +1,78 @@
 var models = require('../models');
 var exports = module.exports = {}
 
+function compare_state(a, b){
+    // a should come before b in the sorted order
+    if(a.state_name< b.state_name){
+            return -1;
+    // a should come after b in the sorted order
+    }else if(a.state_name > b.state_name){
+            return 1;
+    // and and b are the same
+    }else{
+            return 0;
+    }
+}
+
+function compare_district(a, b){
+    // a should come before b in the sorted order
+    if(a.district_name< b.district_name){
+            return -1;
+    // a should come after b in the sorted order
+    }else if(a.district_name > b.district_name){
+            return 1;
+    // and and b are the same
+    }else{
+            return 0;
+    }
+}
+
+function compare_taluka(a, b){
+    // a should come before b in the sorted order
+    if(a.taluka_name< b.taluka_name){
+            return -1;
+    // a should come after b in the sorted order
+    }else if(a.taluka_name > b.taluka_name){
+            return 1;
+    // and and b are the same
+    }else{
+            return 0;
+    }
+}
+
+function compare_area(a, b){
+    // a should come before b in the sorted order
+    if(a.area_name< b.area_name){
+            return -1;
+    // a should come after b in the sorted order
+    }else if(a.area_name > b.area_name){
+            return 1;
+    // and and b are the same
+    }else{
+            return 0;
+    }
+}
+
+function compare_village(a, b){
+    // a should come before b in the sorted order
+    if(a.village_name< b.village_name){
+            return -1;
+    // a should come after b in the sorted order
+    }else if(a.village_name > b.village_name){
+            return 1;
+    // and and b are the same
+    }else{
+            return 0;
+    }
+}
+
 exports.allStates = function(req, res){
     models.state.findAll({
         where: {}
     })
     .then(function(result){
         console.log(result);
+        result.sort(compare_state);
         return res.status(200).json({
             status: "success",
             message: "List of all states are below!!",
@@ -29,6 +95,7 @@ exports.allDistricts = function(req, res){
     })
     .then(function(result){
         console.log(result);
+        result.sort(compare_district);
         return res.status(200).json({
             status: "success",
             message: "List of all districts are below!!",
@@ -51,6 +118,7 @@ exports.allTalukas = function(req, res){
     })
     .then(function(result){
         console.log(result);
+        result.sort(compare_taluka);
         return res.status(200).json({
             status: "success",
             message: "List of all talukas are below!!",
@@ -73,6 +141,7 @@ exports.allArea = function(req, res){
     })
     .then(function(result){
         console.log(result);
+        result.sort(compare_area);
         return res.status(200).json({
             status: "success",
             message: "List of all area are below!!",
@@ -95,6 +164,7 @@ exports.allVillages = function(req, res){
     })
     .then(function(result){
         console.log(result);
+        result.sort(compare_village);
         return res.status(200).json({
             status: "success",
             message: "List of all villages are below!!",
@@ -140,6 +210,7 @@ exports.getDistrictsOfState = function(req, res){
     })
     .then(function(result){
         console.log(result);
+        result.sort(compare_district);
         return res.status(200).json({
             status: "success",
             message: "List of all districts of given state are below!!",
@@ -163,6 +234,7 @@ exports.getTalukasOfDistrict = function(req, res){
     })
     .then(function(result){
         console.log(result);
+        result.sort(compare_taluka);
         return res.status(200).json({
             status: "success",
             message: "List of all talukas of given district are below!!",
@@ -186,6 +258,7 @@ exports.getAreaOfTaluka = function(req, res){
     })
     .then(function(result){
         console.log(result);
+        result.sort(compare_area);
         return res.status(200).json({
             status: "success",
             message: "List of all areas of given taluka are below!!",
@@ -231,6 +304,7 @@ exports.getVilagesOfTaluka = function(req, res){
     })
     .then(function(result){
         console.log(result);
+        result.sort(compare_village);
         return res.status(200).json({
             status: "success",
             message: "List of all villages of given taluka are below!!",
