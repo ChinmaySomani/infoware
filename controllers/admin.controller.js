@@ -135,6 +135,35 @@ exports.getBData = async function(req, res){
     });
 }
 
+exports.getWebBData = async function(req, res){
+    let buyerId= req.params.buyer_id;
+
+    let found=0;
+    let ans;
+
+    let data_array=await models.buyer_webinar_form.findAll({where:{}});
+    
+    for(var i=0;i<data_array.length;i++){
+        if((data_array[i].userid==buyerId) || ((data_array[i].userid+"\n")==buyerId)){
+            found=1;
+            ans=data_array[i];
+            break;
+        }
+    }
+    if(found==0){
+        return res.status(200).json({
+            status: "success",
+            message: "User has not filled this form yet!!",
+            data: ans,
+        });
+    }
+    return res.status(200).json({
+        status: "success",
+        message: "User has filled this form!!",
+        data: ans,
+    });
+}
+
 exports.allUsefulParts = function(req, res){
     models.useful_part_of_plants.findAll({
         where: {}

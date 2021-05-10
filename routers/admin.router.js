@@ -9,6 +9,8 @@ router.get('/admin/get/data/farmer/:farmer_id/form/:form_no', index.getFData);
 
 router.get('/admin/get/data/buyer/:buyer_id/form/:form_no', index.getBData);
 
+router.get('/admin/get/data/buyer/:buyer_id/webinar/form', index.getWebBData);
+
 router.get('/farmer/get/all/medicinalCrops', index.allMedicinalCrops);
 
 router.get('/farmer/get/all/usefulPartsOfPlants', index.allUsefulParts);
