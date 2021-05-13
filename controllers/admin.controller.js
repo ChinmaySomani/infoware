@@ -1,6 +1,155 @@
 var models = require('../models');
 var exports = module.exports = {}
 var bCrypt = require('bcrypt-nodejs');
+const ExcelJS = require("exceljs");
+const path = require("path");
+const fs = require("fs");
+const aws = require( 'aws-sdk' );
+
+const s3 = new aws.S3({
+    accessKeyId: process.env.AWS_ACCESS_ID,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+    Bucket: process.env.AWS_BUCKET_NAME,
+    signatureVersion: 'v4',
+   });
+
+exports.exportWebinarData = async function(req, res){
+try {
+    
+    const workbook = new ExcelJS.Workbook();
+    const worksheet1 = workbook.addWorksheet("Farmer_Webinar_Data");
+    const worksheet2 = workbook.addWorksheet("Buyer_Webinar_Data");
+
+    worksheet1.columns = [
+        { header: "NAME", key: "name", width: 30 },
+        { header: "EMAIL", key: "email", width: 30 },
+        { header: "MOBILE", key: "mobile", width: 30 },
+        { header: "ADDRESS", key: "address", width: 30 },
+        { header: "STATE", key: "state", width: 30 },
+        { header: "DISTRICT", key: "district", width: 30 },
+        { header: "TALUKA", key: "taluka", width: 30 },
+        { header: "VILLAGE", key: "village_name", width: 30 },
+        { header: "PINCODE", key: "pin_code", width: 30 },
+        { header: "WHATSAPP NO", key: "whatsApp", width: 30 },
+      ];
+    
+    let farmer_array= await models.fpdetails.findAll({where:{}});
+    let farmer_records=[];
+
+    for(var i=0;i<farmer_array.length;i++){
+        let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+        let obj={
+            "name": farmer.name,
+            "email": farmer.email,
+            "mobile": farmer.mobile,
+            "address": farmer_array[i].address,
+            "state": farmer_array[i].village1,
+            "district": farmer_array[i].district1,
+            "taluka": farmer_array[i].taluka1,
+            "village_name": farmer_array[i].village_name,
+            "pin_code": farmer_array[i].pin_code,
+            "whatsApp": farmer_array[i].whatsApp,
+        }
+        farmer_records.push(obj);
+    }
+
+    for(var i=0;i<farmer_records.length;i++){
+        worksheet1.addRow(farmer_records[i]);
+    }
+
+    worksheet2.columns = [
+        { header: "NAME", key: "name", width: 30 },
+        { header: "EMAIL", key: "email", width: 30 },
+        { header: "MOBILE", key: "mobile", width: 30 },
+        { header: "ADDRESS", key: "address", width: 30 },
+        { header: "STATE", key: "state", width: 30 },
+        { header: "DISTRICT", key: "district", width: 30 },
+        { header: "TALUKA", key: "taluka", width: 30 },
+        { header: "VILLAGE", key: "village_name", width: 30 },
+        { header: "PINCODE", key: "pin_code", width: 30 },
+        { header: "WHATSAPP NO", key: "whatsApp", width: 30 },
+      ];
+
+    let buyer_array= await models.buyer_webinar_form.findAll({where:{}});
+    let buyer_records=[];
+
+    for(var i=0;i<buyer_array.length;i++){
+        let buyer= await models.user.findOne({where:{"id": buyer_array[i].userid}});
+        let obj={
+            "name": buyer.name,
+            "email": buyer.email,
+            "mobile": buyer.mobile,
+            "address": buyer_array[i].address,
+            "state": buyer_array[i].state,
+            "district": buyer_array[i].district,
+            "taluka": buyer_array[i].taluka,
+            "village_name": buyer_array[i].village_name,
+            "pin_code": buyer_array[i].pin_code,
+            "whatsApp": buyer_array[i].whatsApp,
+        }
+        buyer_records.push(obj);
+    }
+
+    for(var i=0;i<buyer_records.length;i++){
+        worksheet2.addRow(buyer_records[i]);
+    }
+
+    worksheet1.getRow(1).eachCell((cell) => {
+        cell.font = { bold: true };
+    });
+
+    worksheet2.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
+    });
+
+    const data = await workbook.xlsx.writeFile(`Exported Webinar Data.xlsx`);
+
+    fs.readFile(path.join(__dirname,`../Exported Webinar Data.xlsx`), (err, data) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+
+        let today = Date();
+        const params = {
+             ACL: 'private',
+              Bucket: process.env.AWS_BUCKET_NAME ,
+              Key: `${today}.xlsx`, // File name you want to save as in S3
+              Body: data,
+              ContentType:'application/vnd.ms-excel'
+          };
+  
+      // Uploading files to the bucket
+      s3.upload(params, async function(err, data) {
+          if (err) {
+              throw err;
+          }
+          console.log(`File uploaded successfully. ${data.Location}`);
+          var obj = { 
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: `${today}.xlsx`,
+            Expires: 60*5
+          };
+          var url = await s3.getSignedUrl('getObject',obj);
+               res.status(200).json({
+                status: "success",
+                message: "Successfully exported data!!",
+                data: `${url}`
+              });
+          });
+      
+      })
+
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      status: "failure",
+      message: "Some error occurred!!",
+      data: null,
+    });
+  }
+}
+
 
 var generateHash = function(password) {
     return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);

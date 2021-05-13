@@ -23,4 +23,6 @@ router.get('/admin/all/plants', index.allPlants);
 
 router.get('/admin/all/memberships', index.allMemberships);
 
+router.get('/admin/export/webinar/data', index.exportWebinarData);
+
 module.exports = router;
