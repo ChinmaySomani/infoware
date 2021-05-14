@@ -69,7 +69,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'buyerCDetails',
-        timestamps : false
+        timestamps : true
     }); 
     return Buyercdetails;
  

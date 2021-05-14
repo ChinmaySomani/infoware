@@ -77,7 +77,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'buyerPDetails',
-        timestamps : false
+        timestamps : true
     }); 
     return Buyerpdetails;
  

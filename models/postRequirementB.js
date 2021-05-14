@@ -47,7 +47,7 @@ module.exports = function(sequelize, Sequelize) {
         
     }, {
         tableName : 'postrequirementbuyer',
-        timestamps : false
+        timestamps : true
     });
  
     return postRequirementBuyer;

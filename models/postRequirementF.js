@@ -42,7 +42,7 @@ module.exports = function(sequelize, Sequelize) {
         
     }, {
         tableName : 'postrequirementfarmer',
-        timestamps : false
+        timestamps : true
     });
  
     return postRequirementFarmer;

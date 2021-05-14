@@ -16,11 +16,17 @@ const s3 = new aws.S3({
 exports.exportWebinarData = async function(req, res){
 try {
     
+    const event= await models.events.findOne({where: {"event_id": req.params.eventId}});
+
     const workbook = new ExcelJS.Workbook();
     const worksheet1 = workbook.addWorksheet("Farmer_Webinar_Data");
     const worksheet2 = workbook.addWorksheet("Buyer_Webinar_Data");
 
     worksheet1.columns = [
+        { header: "EVENT NAME", key: "event_name", width: 30 },
+        { header: "EVENT START DATE", key: "event_start_date", width: 30 },
+        { header: "EVENT END DATE", key: "event_end_date", width: 30 },
+        { header: "EVENT TYPE", key: "event_type", width: 30 },
         { header: "NAME", key: "name", width: 30 },
         { header: "EMAIL", key: "email", width: 30 },
         { header: "MOBILE", key: "mobile", width: 30 },
@@ -31,6 +37,7 @@ try {
         { header: "VILLAGE", key: "village_name", width: 30 },
         { header: "PINCODE", key: "pin_code", width: 30 },
         { header: "WHATSAPP NO", key: "whatsApp", width: 30 },
+        { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
       ];
     
     let farmer_array= await models.fpdetails.findAll({where:{}});
@@ -39,6 +46,10 @@ try {
     for(var i=0;i<farmer_array.length;i++){
         let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
         let obj={
+            "event_name": event.event_name,
+            "event_start_date": event.start_date,
+            "event_end_date": event.end_date,
+            "event_type": event.event_type,
             "name": farmer.name,
             "email": farmer.email,
             "mobile": farmer.mobile,
@@ -49,6 +60,7 @@ try {
             "village_name": farmer_array[i].village_name,
             "pin_code": farmer_array[i].pin_code,
             "whatsApp": farmer_array[i].whatsApp,
+            "regs_date": farmer_array[i].createdAt,
         }
         farmer_records.push(obj);
     }
@@ -58,6 +70,10 @@ try {
     }
 
     worksheet2.columns = [
+        { header: "EVENT NAME", key: "event_name", width: 30 },
+        { header: "EVENT START DATE", key: "event_start_date", width: 30 },
+        { header: "EVENT END DATE", key: "event_end_date", width: 30 },
+        { header: "EVENT TYPE", key: "event_type", width: 30 },
         { header: "NAME", key: "name", width: 30 },
         { header: "EMAIL", key: "email", width: 30 },
         { header: "MOBILE", key: "mobile", width: 30 },
@@ -68,6 +84,7 @@ try {
         { header: "VILLAGE", key: "village_name", width: 30 },
         { header: "PINCODE", key: "pin_code", width: 30 },
         { header: "WHATSAPP NO", key: "whatsApp", width: 30 },
+        { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
       ];
 
     let buyer_array= await models.buyer_webinar_form.findAll({where:{}});
@@ -76,6 +93,10 @@ try {
     for(var i=0;i<buyer_array.length;i++){
         let buyer= await models.user.findOne({where:{"id": buyer_array[i].userid}});
         let obj={
+            "event_name": event.event_name,
+            "event_start_date": event.start_date,
+            "event_end_date": event.end_date,
+            "event_type": event.event_type,
             "name": buyer.name,
             "email": buyer.email,
             "mobile": buyer.mobile,
@@ -86,6 +107,7 @@ try {
             "village_name": buyer_array[i].village_name,
             "pin_code": buyer_array[i].pin_code,
             "whatsApp": buyer_array[i].whatsApp,
+            "regs_date": buyer_array[i].createdAt,
         }
         buyer_records.push(obj);
     }

@@ -41,7 +41,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'nearbyBuyer',
-        timestamps : false
+        timestamps : true
     });
  
     return Nearbybuyer;

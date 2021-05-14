@@ -29,7 +29,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'valueadd',
-        timestamps : false
+        timestamps : true
     });
  
     return Valueadd;

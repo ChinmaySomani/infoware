@@ -39,7 +39,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'dateoffilling',
-        timestamps : false
+        timestamps : true
     });
  
     return Dof;

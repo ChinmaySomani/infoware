@@ -33,7 +33,7 @@ module.exports = function(sequelize, Sequelize) {
         //   }
     }, {
         tableName : 'membership',
-        timestamps : false
+        timestamps : true
     });
  
     return Membership;

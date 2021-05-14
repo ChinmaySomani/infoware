@@ -29,7 +29,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'geoorigin',
-        timestamps : false
+        timestamps : true
     });
  
     return Geoorigin;

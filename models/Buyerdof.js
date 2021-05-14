@@ -25,7 +25,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'buyerdof',
-        timestamps : false
+        timestamps : true
     });
  
     return Buyerdof;

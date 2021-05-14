@@ -78,7 +78,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'buyer_webinar_form',
-        timestamps : false
+        timestamps : true
     }); 
     return buyerWebinarForm;
  

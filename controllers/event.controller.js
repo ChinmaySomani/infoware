@@ -3,6 +3,15 @@ var exports = module.exports = {}
 
 exports.createEvent = async function(req, res){
     var fpd = req.body;
+
+    let today= Date();
+    if(today>=fpd.start_date && today<=fpd.end_date){
+        fpd.status="active";
+    }
+    else{
+        fpd.status="inactive";
+    }
+
     let total_users_registered_for_event=0;
 
     console.log(models);

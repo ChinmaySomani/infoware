@@ -29,7 +29,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'providetest',
-        timestamps : false
+        timestamps : true
     });
  
     return Providetest;

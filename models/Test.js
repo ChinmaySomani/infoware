@@ -25,7 +25,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'test',
-        timestamps : false
+        timestamps : true
     });
  
     return Test;

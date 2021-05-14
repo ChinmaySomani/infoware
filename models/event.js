@@ -8,6 +8,11 @@ module.exports = function(sequelize, Sequelize) {
             primaryKey: true
         },
         
+        // Webinar or Farmer
+        event_type: {
+            type: Sequelize.TEXT,
+        },
+
         event_name: {
             type: Sequelize.TEXT,
         },
@@ -20,7 +25,11 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.INTEGER,
         },
 
-        event_date: {
+        start_date: {
+            type: Sequelize.DATE,
+        },
+
+        end_date: {
             type: Sequelize.DATE,
         },
 

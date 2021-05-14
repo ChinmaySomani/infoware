@@ -45,7 +45,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'routinesup',
-        timestamps : false
+        timestamps : true
     });
  
     return Routinesup;

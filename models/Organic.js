@@ -1,3 +1,5 @@
+const { IoTSecureTunneling } = require("aws-sdk");
+
 module.exports = function(sequelize, Sequelize) {
  
     var Organic = sequelize.define('organic', {
@@ -45,7 +47,7 @@ module.exports = function(sequelize, Sequelize) {
         
     }, {
         tableName : 'organic',
-        timestamps : false
+        timestamps : true
     });
  
     return Organic;

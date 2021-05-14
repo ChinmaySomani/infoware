@@ -157,7 +157,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'farmerPDetails',
-        timestamps : false
+        timestamps : true
     }); 
     return Fpdetails;
  

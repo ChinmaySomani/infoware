@@ -25,7 +25,7 @@ module.exports = function(sequelize, Sequelize) {
           }
     }, {
         tableName : 'plantg',
-        timestamps : false
+        timestamps : true
     }); 
     return Plantg;
  
