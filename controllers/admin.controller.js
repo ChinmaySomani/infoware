@@ -227,43 +227,56 @@ try {
         cell.font = { bold: true };
     });
 
-    const data = await workbook.xlsx.writeFile(`Exported Webinar Data.xlsx`);
+    let today = Date();
+    res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=" + `${today}.xlsx`
+    );
+    await workbook.xlsx.write(res)
+    res.status(200).end()
+    console.log("File downloaded successfully!!");
 
-    fs.readFile(path.join(__dirname,`../Exported Webinar Data.xlsx`), (err, data) => {
-        if (err) {
-          console.error(err)
-          return
-        }
+    // const data = await workbook.xlsx.writeFile(`Exported Webinar Data.xlsx`);
 
-        let today = Date();
-        const params = {
-             ACL: 'private',
-              Bucket: process.env.AWS_BUCKET_NAME ,
-              Key: `${today}.xlsx`, // File name you want to save as in S3
-              Body: data,
-              ContentType:'application/vnd.ms-excel'
-          };
+    // fs.readFile(path.join(__dirname,`../Exported Webinar Data.xlsx`), (err, data) => {
+    //     if (err) {
+    //       console.error(err)
+    //       return
+    //     }
+
+    //     let today = Date();
+    //     const params = {
+    //          ACL: 'private',
+    //           Bucket: process.env.AWS_BUCKET_NAME ,
+    //           Key: `${today}.xlsx`, // File name you want to save as in S3
+    //           Body: data,
+    //           ContentType:'application/vnd.ms-excel'
+    //       };
   
-      // Uploading files to the bucket
-      s3.upload(params, async function(err, data) {
-          if (err) {
-              throw err;
-          }
-          console.log(`File uploaded successfully. ${data.Location}`);
-          var obj = { 
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `${today}.xlsx`,
-            // Expires: 60*5
-          };
-          var url = await s3.getSignedUrl('getObject',obj);
-               res.status(200).json({
-                status: "success",
-                message: "Successfully exported data!!",
-                data: `${url}`
-              });
-          });
+    //   // Uploading files to the bucket
+    //   s3.upload(params, async function(err, data) {
+    //       if (err) {
+    //           throw err;
+    //       }
+    //       console.log(`File uploaded successfully. ${data.Location}`);
+    //       var obj = { 
+    //         Bucket: process.env.AWS_BUCKET_NAME,
+    //         Key: `${today}.xlsx`,
+    //         // Expires: 60*5
+    //       };
+    //       var url = await s3.getSignedUrl('getObject',obj);
+    //            res.status(200).json({
+    //             status: "success",
+    //             message: "Successfully exported data!!",
+    //             data: `${url}`
+    //           });
+    //       });
       
-      })
+    //   })
 
   } catch (err) {
     console.log(err);
