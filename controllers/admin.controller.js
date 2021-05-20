@@ -19,8 +19,10 @@ try {
     const event= await models.events.findOne({where: {"event_id": req.params.eventId}});
 
     const workbook = new ExcelJS.Workbook();
-    const worksheet1 = workbook.addWorksheet("Farmer_Webinar_Data");
+    const worksheet1 = workbook.addWorksheet("Farmer_Webinar_Data-1");
     const worksheet2 = workbook.addWorksheet("Buyer_Webinar_Data");
+    const worksheet3 = workbook.addWorksheet("Farmer_Webinar_Data-2");
+    const worksheet4 = workbook.addWorksheet("Farmer_Webinar_Data-3");
 
     worksheet1.columns = [
         { header: "EVENT NAME", key: "event_name", width: 30 },
@@ -116,12 +118,113 @@ try {
         worksheet2.addRow(buyer_records[i]);
     }
 
+    worksheet3.columns = [
+        { header: "EVENT NAME", key: "event_name", width: 30 },
+        { header: "EVENT START DATE", key: "event_start_date", width: 30 },
+        { header: "EVENT END DATE", key: "event_end_date", width: 30 },
+        { header: "EVENT TYPE", key: "event_type", width: 30 },
+        { header: "NAME", key: "name", width: 30 },
+        { header: "EMAIL", key: "email", width: 30 },
+        { header: "MOBILE", key: "mobile", width: 30 },
+        { header: "Medicinal_Crop", key: "medicinal_crop", width: 30 },
+        { header: "Useful_part", key: "useful_part", width: 30 },
+        { header: "Estimated_production", key: "estimated_production", width: 30 },
+        { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+      ];
+
+      let farmer_array2= await models.plantg.findAll({where:{}});
+      let farmer_records2=[];
+  
+      for(var i=0;i<farmer_array2.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array2[i].userid}});
+          let allRecords=farmer_array2[i].list_of_all_records_entered_by_farmer;
+          for(var j=0;j<allRecords.length;j++){
+            let medicinal_crop_array=allRecords[j].Medicinal_Crop;
+            let useful_part_array=allRecords[j].Useful_part;
+            let obj={
+                "event_name": event.event_name,
+                "event_start_date": event.start_date,
+                "event_end_date": event.end_date,
+                "event_type": event.event_type,
+                "name": farmer.name,
+                "email": farmer.email,
+                "mobile": farmer.mobile,
+                "medicinal_crop": medicinal_crop_array.join(','),
+                "useful_part": useful_part_array.join(','),
+                "estimated_production": allRecords[j].Estimated_production,
+                "regs_date": farmer_array2[i].createdAt,
+            }
+            farmer_records2.push(obj);
+        }
+    }
+    
+    for(var i=0;i<farmer_records2.length;i++){
+        worksheet3.addRow(farmer_records2[i]);
+    }
+
+
+    worksheet4.columns = [
+        { header: "EVENT NAME", key: "event_name", width: 30 },
+        { header: "EVENT START DATE", key: "event_start_date", width: 30 },
+        { header: "EVENT END DATE", key: "event_end_date", width: 30 },
+        { header: "EVENT TYPE", key: "event_type", width: 30 },
+        { header: "NAME", key: "name", width: 30 },
+        { header: "EMAIL", key: "email", width: 30 },
+        { header: "MOBILE", key: "mobile", width: 30 },
+        { header: "Crop_Name", key: "crop_name", width: 30 },
+        { header: "Drying", key: "drying", width: 30 },
+        { header: "Grading", key: "grading", width: 30 },
+        { header: "Cleaning", key: "cleaning", width: 30 },
+        { header: "Crushed_powder", key: "crushed_powder", width: 30 },
+        { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+      ];
+
+      let farmer_array3= await models.valueadd.findAll({where:{}});
+      let farmer_records3=[];
+  
+      for(var i=0;i<farmer_array3.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array3[i].userid}});
+          let allRecords=farmer_array3[i].list_of_all_records_entered_by_farmer;
+          for(var j=0;j<allRecords.length;j++){
+            let crop_array=allRecords[j].Crop_Name;
+            let obj={
+                "event_name": event.event_name,
+                "event_start_date": event.start_date,
+                "event_end_date": event.end_date,
+                "event_type": event.event_type,
+                "name": farmer.name,
+                "email": farmer.email,
+                "mobile": farmer.mobile,
+                "crop_name": crop_array.join(','),
+                "drying": allRecords[j].Drying ? "Filled": "Not Filled",
+                "grading": allRecords[j].Grading ? "Filled": "Not Filled",
+                "cleaning": allRecords[j].Cleaning ? "Filled": "Not Filled",
+                "crushed_powder": allRecords[j].Crushed_powder ? "Filled": "Not Filled",
+                "regs_date": farmer_array3[i].createdAt,
+            }
+            farmer_records3.push(obj);
+        }
+    }
+    
+    for(var i=0;i<farmer_records3.length;i++){
+        worksheet4.addRow(farmer_records3[i]);
+    }
+
+
     worksheet1.getRow(1).eachCell((cell) => {
         cell.font = { bold: true };
     });
 
     worksheet2.getRow(1).eachCell((cell) => {
       cell.font = { bold: true };
+    });
+
+    worksheet3.getRow(1).eachCell((cell) => {
+        cell.font = { bold: true };
+    });
+
+    worksheet4.getRow(1).eachCell((cell) => {
+        cell.font = { bold: true };
     });
 
     const data = await workbook.xlsx.writeFile(`Exported Webinar Data.xlsx`);
