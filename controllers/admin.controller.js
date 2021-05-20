@@ -150,7 +150,7 @@ try {
           var obj = { 
             Bucket: process.env.AWS_BUCKET_NAME,
             Key: `${today}.xlsx`,
-            Expires: 60*5
+            // Expires: 60*5
           };
           var url = await s3.getSignedUrl('getObject',obj);
                res.status(200).json({
