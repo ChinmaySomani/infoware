@@ -11,6 +11,7 @@ const s3 = new aws.S3({
     secretAccessKey: process.env.AWS_SECRET_KEY,
     Bucket: process.env.AWS_BUCKET_NAME,
     signatureVersion: 'v4',
+    region:'ap-south-1'
    });
 
 exports.exportWebinarData = async function(req, res){
