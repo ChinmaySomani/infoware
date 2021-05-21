@@ -243,10 +243,14 @@ try {
 
     const data = await workbook.xlsx.writeFile(`Exported Webinar Data.xlsx`);
 
-    fs.readFile(path.join(__dirname,`../Exported Webinar Data.xlsx`), (err, data) => {
+    fs.readFile(path.join(__dirname,`../Exported Webinar Data.xlsx`), async (err, data) => {
         if (err) {
           console.error(err)
-          return
+          res.status(400).json({
+            status: "failure",
+            message: "Some error occurred in reading file from locally!!",
+            error: err
+          });
         }
 
         let today = Date();
@@ -259,9 +263,14 @@ try {
           };
   
       // Uploading files to the bucket
-      s3.upload(params, async function(err, data) {
+      s3.upload(params, function(err, data) {
           if (err) {
-              throw err;
+            console.error(err)
+            res.status(400).json({
+              status: "failure",
+              message: "Some error occurred while uploading file to s3!!",
+              error: err
+            });
           }
           console.log(`File uploaded successfully. ${data.Location}`);
           var obj = { 
@@ -269,12 +278,22 @@ try {
             Key: `${today}.xlsx`,
             // Expires: 60*5
           };
-          var url = s3.getSignedUrl('getObject',obj);
-               res.status(200).json({
+          s3.getSignedUrl('getObject',obj,(err,url)=>{
+            if (err) {
+                console.error(err)
+                res.status(400).json({
+                  status: "failure",
+                  message: "Some error occurred in getting signed url!!",
+                  error: err
+                });
+            }
+            res.status(200).json({
                 status: "success",
                 message: "Successfully exported data!!",
                 data: `${url}`
               });
+            });
+
           });
       
       })
