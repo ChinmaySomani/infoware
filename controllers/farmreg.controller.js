@@ -240,6 +240,60 @@ exports.reg3p =  function(req, res){
 }
 
 exports.reg4p = function(req, res){
+    // console.log(req.body);
+    var fpd = req.body;
+    var pid = req.params.id;
+    fpd.userid = pid;
+
+    var array=[];
+    models.ayurvedic_product.findAll({
+        where: {}
+    }).then(result=>{
+        array=result;
+        console.log(array);
+        let modelId;
+        for(var i=0;i<array.length;i++){
+            if((array[i].userid==pid) || ((array[i].userid+"\n")==pid)){
+                modelId=array[i].ayurvedic_product_id;
+                models.ayurvedic_product.update(fpd,{where:{"ayurvedic_product_id": modelId}});
+                console.log("Updated successfully");
+                return res.status(200).json({
+                    status: "success",
+                    message: "Successfully filled the details!!",
+                });
+            }
+        }
+
+        models.ayurvedic_product.create(fpd)
+        .then(function(result){
+            console.log("Created successfully");
+            console.log(result);
+            return res.status(200).json({
+                status: "success",
+                message: "Successfully filled the details!!",
+                data: result,
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
+        });
+
+    }).catch(error=>{
+        console.log(error);
+        return res.status(400).json({
+            status: "failure",
+            message: "Some error ocurred!",
+            data: null,
+        });
+    })
+
+}
+
+exports.reg5p = function(req, res){
     
     if(typeof req.body.name_of_organic_farm_certifying_agency!="string" && req.body.name_of_organic_farm_certifying_agency){
         return res.status(400).json({
@@ -312,7 +366,7 @@ exports.reg4p = function(req, res){
 
 }
 
-exports.reg5p = function(req, res){
+exports.reg6p = function(req, res){
     
     if(typeof req.body.name_of_vendor!="string" && req.body.name_of_vendor){
         return res.status(400).json({
@@ -379,7 +433,7 @@ exports.reg5p = function(req, res){
 
 }
 
-exports.reg6p = function(req, res){
+exports.reg7p = function(req, res){
     var fpd = req.body;
     var pid = req.params.id;
     fpd.userid = pid;
@@ -432,7 +486,7 @@ exports.reg6p = function(req, res){
 
 }
 
-exports.reg7p = function(req, res){
+exports.reg8p = function(req, res){
     // console.log(req.body);
     var fpd = req.body;
     var pid = req.params.id;
@@ -486,7 +540,7 @@ exports.reg7p = function(req, res){
 
 }
 
-exports.reg8p = function(req, res){
+exports.reg9p = function(req, res){
     var fpd = req.body;
     var pid = req.params.id;
     fpd.userid = pid;
@@ -539,7 +593,7 @@ exports.reg8p = function(req, res){
 
 }
 
-exports.reg9p = function(req, res){
+exports.reg10p = function(req, res){
     
     if(typeof req.body.name!="string" && req.body.name){
         return res.status(400).json({
@@ -612,7 +666,7 @@ exports.reg9p = function(req, res){
 
 }
 
-exports.reg10p = function(req, res){
+exports.reg11p = function(req, res){
     
     if(typeof req.body.name!="string" && req.body.name){
         return res.status(400).json({

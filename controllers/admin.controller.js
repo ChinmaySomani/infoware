@@ -372,13 +372,14 @@ exports.getFData = async function(req, res){
     if(formNo==1) data_array=await models.fpdetails.findAll({where:{}});
     if(formNo==2) data_array=await models.plantg.findAll({where:{}});
     if(formNo==3) data_array=await models.valueadd.findAll({where:{}});
-    if(formNo==4) data_array=await models.organic.findAll({where:{}});
-    if(formNo==5) data_array=await models.farmbuyer.findAll({where:{}});
-    if(formNo==6) data_array=await models.problem.findAll({where:{}});
-    if(formNo==7) data_array=await models.experiment.findAll({where:{}});
-    if(formNo==8) data_array=await models.futureplant.findAll({where:{}});
-    if(formNo==9) data_array=await models.nearbyfarmer.findAll({where:{}});
-    if(formNo==10) data_array=await models.dof.findAll({where:{}});
+    if(formNo==4) data_array=await models.ayurvedic_product.findAll({where:{}});
+    if(formNo==5) data_array=await models.organic.findAll({where:{}});
+    if(formNo==6) data_array=await models.farmbuyer.findAll({where:{}});
+    if(formNo==7) data_array=await models.problem.findAll({where:{}});
+    if(formNo==8) data_array=await models.experiment.findAll({where:{}});
+    if(formNo==9) data_array=await models.futureplant.findAll({where:{}});
+    if(formNo==10) data_array=await models.nearbyfarmer.findAll({where:{}});
+    if(formNo==11) data_array=await models.dof.findAll({where:{}});
     
     for(var i=0;i<data_array.length;i++){
         if((data_array[i].userid==farmerId) || ((data_array[i].userid+"\n")==farmerId)){

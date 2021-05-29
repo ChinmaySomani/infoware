@@ -10,6 +10,10 @@ module.exports = function(sequelize, Sequelize) {
             defaultValue: Sequelize.UUIDV4,
             primaryKey: true
         },
+
+        yes_or_no:{
+            type: Sequelize.TEXT
+        },
  
         name: {
             type: Sequelize.TEXT

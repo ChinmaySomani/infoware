@@ -1,10 +1,8 @@
-const { IoTSecureTunneling } = require("aws-sdk");
-
 module.exports = function(sequelize, Sequelize) {
  
-    var Organic = sequelize.define('organic', {
+    var Ayurvedic = sequelize.define('ayurvedic_product', {
  
-        organic_id: {
+        ayurvedic_product_id: {
             // autoIncrement: true,
             // primaryKey: true,
             // type: Sequelize.INTEGER
@@ -17,26 +15,10 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.TEXT
         },
  
-        name_of_organic_farm_certifying_agency: {
+        ayurvedic_product_info: {
             type: Sequelize.TEXT
         },
         
-        date_and_year_of_registration: {
-            type: Sequelize.DATE
-        },
-        
-        registration_no: {
-            type: Sequelize.BIGINT
-        },
-
-        file_upload_link: {
-            type: Sequelize.TEXT
-        },
-
-        have_you_done_any_lab_test: {
-            type: Sequelize.TEXT //yes or no
-        },
-
         userid: {
             // type: Sequelize.INTEGER,
             type: Sequelize.UUID,
@@ -45,12 +27,11 @@ module.exports = function(sequelize, Sequelize) {
               key: 'id'
             }
           }
-        
     }, {
-        tableName : 'organic',
+        tableName : 'ayurvedic_product',
         timestamps : true
     });
  
-    return Organic;
+    return Ayurvedic;
  
 }
