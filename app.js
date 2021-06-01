@@ -41,6 +41,7 @@ const locationRoute = require('./routers/location.router.js');
 const fileUploadRoute = require('./routers/file_upload.router.js');
 const webinarRoute = require('./routers/webinar.router.js');
 const eventRoute = require('./routers/event.router.js');
+const exportFarmerFormsRoute = require('./routers/export_farmer_forms.router.js');
 
 app.use('/', rout);
 app.use('/', farmreg);
@@ -52,6 +53,7 @@ app.use('/',locationRoute);
 app.use('/',fileUploadRoute);
 app.use('/',webinarRoute);
 app.use('/',eventRoute);
+app.use('/',exportFarmerFormsRoute);
 
 // app.get('/yip', function(req, res){
 //     models.user.findAll()
