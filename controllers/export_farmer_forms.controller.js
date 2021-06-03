@@ -48,6 +48,12 @@ exports.exportFarmerFormData1 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+
             let obj={
                 "name": farmer.name,
                 "email": farmer.email,
@@ -177,6 +183,12 @@ exports.exportFarmerFormData2 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+
             let allRecords=farmer_array[i].list_of_all_records_entered_by_farmer || [];
             for(var j=0;j<allRecords.length;j++){
                 let medicinal_crop_array=allRecords[j].Medicinal_Crop || [];
@@ -304,6 +316,12 @@ exports.exportFarmerFormData3 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+
             let allRecords=farmer_array[i].list_of_all_records_entered_by_farmer || [];
             for(var j=0;j<allRecords.length;j++){
                 let crop_array=allRecords[j].Crop_Name || [];
@@ -424,6 +442,12 @@ exports.exportFarmerFormData4 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+
             let obj={
                 "name": farmer.name,
                 "email": farmer.email,
@@ -535,6 +559,12 @@ exports.exportFarmerFormData5 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+
             let obj={
                 "name": farmer.name,
                 "email": farmer.email,
@@ -649,6 +679,12 @@ exports.exportFarmerFormData6 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+
             let obj={
                 "name": farmer.name,
                 "email": farmer.email,
@@ -760,6 +796,12 @@ exports.exportFarmerFormData7 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+
             let allRecords=farmer_array[i].list_of_all_records_entered_by_farmer || [];
             for(var j=0;j<allRecords.length;j++){
                 let medicinal_crop_array=allRecords[j].Name_of_medicinal_crop || [];
@@ -872,6 +914,12 @@ exports.exportFarmerFormData8 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+
             let obj={
                 "name": farmer.name,
                 "email": farmer.email,
@@ -984,6 +1032,12 @@ exports.exportFarmerFormData9 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+
             let allRecords=farmer_array[i].list_of_all_records_entered_by_farmer || [];
             for(var j=0;j<allRecords.length;j++){
                 let medicinal_crop_array=allRecords[j].Name_of_medicinal_crop || [];
@@ -1102,6 +1156,12 @@ exports.exportFarmerFormData10 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+
             let obj={
                 "name": farmer.name,
                 "email": farmer.email,
@@ -1213,6 +1273,12 @@ exports.exportFarmerFormData11 = async function(req, res){
     
         for(var i=0;i<farmer_array.length;i++){
             let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+            
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+            if(checkUserStatus.status=='Remove'){
+                continue;
+            }
+            
             let obj={
                 "name": farmer.name,
                 "email": farmer.email,

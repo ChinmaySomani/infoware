@@ -25,4 +25,14 @@ router.get('/admin/all/memberships', index.allMemberships);
 
 router.get('/admin/export/data/:eventId', index.exportWebinarData);
 
+router.post('/admin/change/user/status/:user_id', index.changeUserStatus);
+
+router.get('/admin/get/all/active/users', index.activeUsers);
+
+router.get('/admin/get/all/inactive/users', index.inactiveUsers);
+
+router.get('/admin/get/all/remove/users', index.removeUsers);
+
+router.get('/admin/create/user/status', index.createUserStatus);
+
 module.exports = router;

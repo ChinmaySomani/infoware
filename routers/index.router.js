@@ -6,7 +6,7 @@ const farmlogin = require('../services/farmauth.js');
 var models = require('../models');
 
 router.post('/login', function(req, res, next ){
-    passport.authenticate('local-signin', function(err, user, info) {
+    passport.authenticate('local-signin', async function(err, user, info) {
       if (err) {
         return res.status(400).json({
             status: "failure",
@@ -23,6 +23,24 @@ router.post('/login', function(req, res, next ){
             data: null,
         });
       }
+
+      let checkUserStatus= await models.userStatus.findOne({where:{"userid": user.id}});
+      if(!checkUserStatus){
+        return res.status(400).json({
+            status: "failure",
+            message: "Some error ocurred!",
+            gujrati_message: "થોડી ભૂલ થઈ",
+            data: null,
+        });
+      }
+
+      if(checkUserStatus.status=='Inactive'){
+        return res.status(400).json({
+            status: "failure",
+            message: "Admin has inactive your account. Plz contact Admin",
+        });
+      }
+
       return res.status(200).json({
         status: "success",
         message: "Successfully logged in !!",
@@ -37,7 +55,7 @@ router.post('/login', function(req, res, next ){
 router.get('/logout',index.logout);
 
 router.post('/signup', function(req, res, next ){
-    passport.authenticate('local-signup', function(err, user, info) {
+    passport.authenticate('local-signup', async function(err, user, info) {
       if (err) {
         return res.status(400).json({
             status: "failure",
@@ -54,6 +72,9 @@ router.post('/signup', function(req, res, next ){
             data: null,
         });
       }
+      
+      let checkUserStatus= await models.userStatus.create({"userid": user.id});
+      
       return res.status(200).json({
         status: "success",
         message: "Successfully registered or logged in (if already registered)!!",

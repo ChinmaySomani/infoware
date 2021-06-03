@@ -5,6 +5,7 @@ const ExcelJS = require("exceljs");
 const path = require("path");
 const fs = require("fs");
 const aws = require( 'aws-sdk' );
+const { send } = require('process');
 
 const s3 = new aws.S3({
     accessKeyId: process.env.AWS_ACCESS_ID,
@@ -12,7 +13,178 @@ const s3 = new aws.S3({
     Bucket: process.env.AWS_BUCKET_NAME,
     signatureVersion: 'v4',
     region:'ap-south-1'
-   });
+});
+
+exports.activeUsers = function(req, res){
+    models.user.findAll({
+        where: {}
+    })
+    .then(async function(result){
+        // console.log(result);
+        
+        let sendArray = [];
+        let count=0;
+        for(var i=0;i<result.length;i++){
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": result[i].id}});
+            if(checkUserStatus.status=='Active'){
+                ++count;
+                sendArray.push(result[i]);
+            }
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Details of all active users!!",
+            data: sendArray,
+            totalActiveUsers: count
+        });
+    }).catch(error => {
+        console.log(error);
+        return res.status(400).json({
+            status: "failure",
+            message: "Some error ocurred!",
+            data: null,
+        });
+    });
+}
+
+exports.inactiveUsers = function(req, res){
+    models.user.findAll({
+        where: {}
+    })
+    .then(async function(result){
+        // console.log(result);
+        
+        let sendArray = [];
+        let count=0;
+        for(var i=0;i<result.length;i++){
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": result[i].id}});
+            if(checkUserStatus.status=='Inactive'){
+                ++count;
+                sendArray.push(result[i]);
+            }
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Details of all inactive users!!",
+            data: sendArray,
+            totalInactiveUsers: count
+        });
+    }).catch(error => {
+        console.log(error);
+        return res.status(400).json({
+            status: "failure",
+            message: "Some error ocurred!",
+            data: null,
+        });
+    });
+}
+
+exports.removeUsers = function(req, res){
+    models.user.findAll({
+        where: {}
+    })
+    .then(async function(result){
+        // console.log(result);
+        
+        let sendArray = [];
+        let count=0;
+        for(var i=0;i<result.length;i++){
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": result[i].id}});
+            if(checkUserStatus.status=='Remove'){
+                ++count;
+                sendArray.push(result[i]);
+            }
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Details of all remove users!!",
+            data: sendArray,
+            totalRemoveUsers: count
+        });
+    }).catch(error => {
+        console.log(error);
+        return res.status(400).json({
+            status: "failure",
+            message: "Some error ocurred!",
+            data: null,
+        });
+    });
+}
+
+exports.createUserStatus = async function(req, res){
+    try{
+        models.user.findAll({
+            where: {}
+        })
+        .then(async function(result){
+            
+            let count=0;
+            for(var i=0;i<result.length;i++){
+                let checkUserStatus= await models.userStatus.findOne({where:{"userid": result[i].id}});
+                if(!checkUserStatus){
+                    console.log("new user status created");
+                    ++count;
+                    let createUserStatus= await models.userStatus.create({"userid": result[i].id});
+                }
+            }
+    
+            let userStatusCreated= await models.userStatus.findAll({where:{}});
+    
+            return res.status(200).json({
+                status: "success",
+                message: "User status created for all!!",
+                totalUsers: result.length,
+                totalUserStatusCreated: userStatusCreated.length,
+                newCreatedUsers: count
+            });
+        }).catch(error => {
+            console.log(error);
+            return res.status(400).json({
+                status: "failure",
+                message: "Some error ocurred!",
+                data: null,
+            });
+        });
+
+    }catch(err){
+        console.log(err);
+            res.status(400).json({
+            status: "failure",
+            message: "Some error occurred!!",
+            data: null,
+        });
+    }
+}
+
+exports.changeUserStatus= async function(req,res){
+    try{
+        let user= await models.userStatus.findOne({where:{"userid": req.params.user_id}});
+        if(!user){
+            return res.status(400).json({
+                status: "failure",
+                message: "user does not exists!!",
+                data: null,
+            });
+        }
+        user.status= req.body.status;
+        user.save();
+        return res.status(200).json({
+            status: "success",
+            message: "User status updated successfully!!",
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(400).json({
+        status: "failure",
+        message: "Some error occurred!!",
+        data: null,
+        });
+    }
+}
 
 exports.exportWebinarData = async function(req, res){
 try {
@@ -48,6 +220,12 @@ try {
 
     for(var i=0;i<farmer_array.length;i++){
         let farmer= await models.user.findOne({where:{"id": farmer_array[i].userid}});
+        
+        let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array[i].userid}});
+        if(checkUserStatus.status=='Remove'){
+            continue;
+        }
+
         let obj={
             "event_name": event.event_name,
             "event_start_date": event.start_date,
@@ -95,6 +273,12 @@ try {
 
     for(var i=0;i<buyer_array.length;i++){
         let buyer= await models.user.findOne({where:{"id": buyer_array[i].userid}});
+        
+        let checkUserStatus= await models.userStatus.findOne({where:{"userid": buyer_array[i].userid}});
+        if(checkUserStatus.status=='Remove'){
+            continue;
+        }
+
         let obj={
             "event_name": event.event_name,
             "event_start_date": event.start_date,
@@ -138,6 +322,12 @@ try {
   
       for(var i=0;i<farmer_array2.length;i++){
           let farmer= await models.user.findOne({where:{"id": farmer_array2[i].userid}});
+          
+        let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array2[i].userid}});
+        if(checkUserStatus.status=='Remove'){
+            continue;
+        }
+
           let allRecords=farmer_array2[i].list_of_all_records_entered_by_farmer;
           for(var j=0;j<allRecords.length;j++){
             let medicinal_crop_array=allRecords[j].Medicinal_Crop;
@@ -184,7 +374,13 @@ try {
       let farmer_records3=[];
   
       for(var i=0;i<farmer_array3.length;i++){
-          let farmer= await models.user.findOne({where:{"id": farmer_array3[i].userid}});
+        let farmer= await models.user.findOne({where:{"id": farmer_array3[i].userid}});
+          
+        let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array3[i].userid}});
+        if(checkUserStatus.status=='Remove'){
+            continue;
+        }
+
           let allRecords=farmer_array3[i].list_of_all_records_entered_by_farmer;
           for(var j=0;j<allRecords.length;j++){
             let crop_array=allRecords[j].Crop_Name;
@@ -521,12 +717,26 @@ exports.allBuyers = function(req, res){
     models.user.findAll({
         where: {"type": "buyer"}
     })
-    .then(function(result){
-        console.log(result);
+    .then(async function(result){
+        // console.log(result);
+
+        let sendArray = [];
+        let count=0;
+        for(var i=0;i<result.length;i++){
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": result[i].id}});
+            if(checkUserStatus.status!='Remove'){
+                sendArray.push(result[i]);
+            }
+            else{
+                ++count;
+            }
+        }
+
         return res.status(200).json({
             status: "success",
             message: "Details of all registered buyers!!",
-            data: result,
+            data: sendArray,
+            usersNotShowingInAdminPanel: count
         });
     }).catch(error => {
         console.log(error);
@@ -542,12 +752,26 @@ exports.allFarmers = function(req, res){
     models.user.findAll({
         where: {"type": "farmer"}
     })
-    .then(function(result){
-        console.log(result);
+    .then(async function(result){
+        // console.log(result);
+        
+        let sendArray = [];
+        let count=0;
+        for(var i=0;i<result.length;i++){
+            let checkUserStatus= await models.userStatus.findOne({where:{"userid": result[i].id}});
+            if(checkUserStatus.status!='Remove'){
+                sendArray.push(result[i]);
+            }
+            else{
+                ++count;
+            }
+        }
+
         return res.status(200).json({
             status: "success",
             message: "Details of all registered farmers!!",
-            data: result,
+            data: sendArray,
+            usersNotShowingInAdminPanel: count
         });
     }).catch(error => {
         console.log(error);
