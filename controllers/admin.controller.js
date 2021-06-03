@@ -5,7 +5,6 @@ const ExcelJS = require("exceljs");
 const path = require("path");
 const fs = require("fs");
 const aws = require( 'aws-sdk' );
-const { send } = require('process');
 
 const s3 = new aws.S3({
     accessKeyId: process.env.AWS_ACCESS_ID,
