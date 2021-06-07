@@ -14,6 +14,34 @@ const s3 = new aws.S3({
     region:'ap-south-1'
 });
 
+
+exports.getCurrentUserStatus= async function(req,res){
+    try{
+        let user= await models.userStatus.findOne({where:{"userid": req.params.user_id}});
+        if(!user){
+            return res.status(400).json({
+                status: "failure",
+                message: "user does not exists!!",
+                data: null,
+            });
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "User status get successfully!!",
+            userStatus: user.status
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(400).json({
+        status: "failure",
+        message: "Some error occurred!!",
+        data: null,
+        });
+    }
+}
+
+
 exports.activeUsers = function(req, res){
     models.user.findAll({
         where: {}
@@ -724,7 +752,21 @@ exports.allBuyers = function(req, res){
         for(var i=0;i<result.length;i++){
             let checkUserStatus= await models.userStatus.findOne({where:{"userid": result[i].id}});
             if(checkUserStatus.status!='Remove'){
-                sendArray.push(result[i]);
+                let obj={
+                    "id": result[i].id,
+                    "name": result[i].name,
+                    "mobile": result[i].mobile,
+                    "username": result[i].username,
+                    "email": result[i].email,
+                    "type": result[i].type,
+                    "password": result[i].password,
+                    "last_login": result[i].last_login,
+                    "membership_id": result[i].membership_id,
+                    "createdAt": result[i].createdAt,
+                    "updatedAt": result[i].updatedAt,
+                    "userStatus": checkUserStatus.status
+                }
+                sendArray.push(obj);
             }
             else{
                 ++count;
@@ -759,7 +801,21 @@ exports.allFarmers = function(req, res){
         for(var i=0;i<result.length;i++){
             let checkUserStatus= await models.userStatus.findOne({where:{"userid": result[i].id}});
             if(checkUserStatus.status!='Remove'){
-                sendArray.push(result[i]);
+                let obj={
+                    "id": result[i].id,
+                    "name": result[i].name,
+                    "mobile": result[i].mobile,
+                    "username": result[i].username,
+                    "email": result[i].email,
+                    "type": result[i].type,
+                    "password": result[i].password,
+                    "last_login": result[i].last_login,
+                    "membership_id": result[i].membership_id,
+                    "createdAt": result[i].createdAt,
+                    "updatedAt": result[i].updatedAt,
+                    "userStatus": checkUserStatus.status
+                }
+                sendArray.push(obj);
             }
             else{
                 ++count;

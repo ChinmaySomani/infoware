@@ -35,4 +35,6 @@ router.get('/admin/get/all/remove/users', index.removeUsers);
 
 router.get('/admin/create/user/status', index.createUserStatus);
 
+router.get('/admin/get/current/status/user/:user_id', index.getCurrentUserStatus);
+
 module.exports = router;
