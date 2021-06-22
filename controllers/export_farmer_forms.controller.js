@@ -13,6 +13,653 @@ const s3 = new aws.S3({
     region:'ap-south-1'
 });
 
+
+exports.exportFarmerFormDataAll = async function(req, res){
+  try {
+      
+      const workbook = new ExcelJS.Workbook();
+      
+      //1
+      const worksheet1 = workbook.addWorksheet("Farmer_Form-1_Data");
+  
+      worksheet1.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "SURNAME", key: "surname", width: 30 },
+          { header: "FATHER/HUSBAND'S NAME", key: "father_or_husband_name", width: 30 },
+          { header: "ADDRESS", key: "address", width: 30 },
+          { header: "STATE", key: "state", width: 30 },
+          { header: "DISTRICT", key: "district", width: 30 },
+          { header: "TALUKA", key: "taluka", width: 30 },
+          { header: "VILLAGE", key: "village_name", width: 30 },
+          { header: "PINCODE", key: "pin_code", width: 30 },
+          { header: "WHATSAPP NO", key: "whatsApp", width: 30 },
+          { header: "TELEGRAM NO", key: "telegram", width: 30 },
+          { header: "AADHAR CARD NO", key: "aadharno", width: 30 },
+          { header: "LAND REVENUE RECORD NO", key: "land_revenue_record_no", width: 30 },
+          { header: "STATE", key: "state2", width: 30 },
+          { header: "DISTRICT", key: "district2", width: 30 },
+          { header: "TALUKA", key: "taluka2", width: 30 },
+          { header: "SURVEY NO", key: "survey_number_sub_survey_number", width: 30 },
+          { header: "ACRE/HECTARE/GOONTHA", key: "acre_hectare_goontha", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array1= await models.fpdetails.findAll({where:{}});
+      let farmer_records1=[];
+  
+      for(var i=0;i<farmer_array1.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array1[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array1[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+
+          let obj={
+              "name": farmer.name,
+              "email": farmer.email,
+              "mobile": farmer.mobile,
+              "surname": farmer_array1[i].surname,
+              "father_or_husband_name": farmer_array1[i].father_or_husband_name,
+              "address": farmer_array1[i].address,
+              "state": farmer_array1[i].village1,
+              "district": farmer_array1[i].district1,
+              "taluka": farmer_array1[i].taluka1,
+              "village_name": farmer_array1[i].village_name,
+              "pin_code": farmer_array1[i].pin_code,
+              "whatsApp": farmer_array1[i].whatsApp,
+              "telegram": farmer_array1[i].telegram,
+              "aadharno": farmer_array1[i].aadharno,
+              "land_revenue_record_no": farmer_array1[i].land_revenue_record_no,
+              "state2": farmer_array1[i].village2,
+              "district2": farmer_array1[i].district2,
+              "taluka2": farmer_array1[i].taluka2,
+              "survey_number_sub_survey_number": farmer_array1[i].survey_number_sub_survey_number,
+              "acre_hectare_goontha": farmer_array1[i].acre_hectare_goontha,
+              "regs_date": farmer_array1[i].createdAt,
+          }
+          farmer_records1.push(obj);
+      }
+  
+      for(var i=0;i<farmer_records1.length;i++){
+          worksheet1.addRow(farmer_records1[i]);
+      }
+  
+      worksheet1.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+
+
+      //2
+      const worksheet2 = workbook.addWorksheet("Farmer_Form-2_Data");
+    
+      worksheet2.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "Medicinal_Crop", key: "medicinal_crop", width: 30 },
+          { header: "Medicinal_Crop_Variety", key: "medicinal_crop_variety", width: 30 },
+          { header: "Plantation", key: "plantation", width: 30 },
+          { header: "When_Planted", key: "when_planted", width: 30 },
+          { header: "Useful_part", key: "useful_part", width: 30 },
+          { header: "The_Time_Of_Harvest", key: "the_time_of_harvest", width: 30 },
+          { header: "Estimated_production", key: "estimated_production", width: 30 },
+          { header: "Expected_Price", key: "expected_price", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array2= await models.plantg.findAll({where:{}});
+      let farmer_records2=[];
+  
+      for(var i=0;i<farmer_array2.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array2[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array2[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+
+          let allRecords=farmer_array2[i].list_of_all_records_entered_by_farmer || [];
+          for(var j=0;j<allRecords.length;j++){
+              let medicinal_crop_array=allRecords[j].Medicinal_Crop || [];
+              let useful_part_array=allRecords[j].Useful_part || [];
+              let obj={
+                  "name": farmer.name,
+                  "email": farmer.email,
+                  "mobile": farmer.mobile,
+                  "medicinal_crop": medicinal_crop_array.join(','),
+                  "medicinal_crop_variety": allRecords[j].Medicinal_crop_variety,
+                  "plantation": allRecords[j].Plantation,
+                  "when_planted": allRecords[j].When_planted,
+                  "useful_part": useful_part_array.join(','),
+                  "the_time_of_harvest": allRecords[j].The_time_of_harvest,
+                  "estimated_production": allRecords[j].Estimated_production,
+                  "expected_price": allRecords[j].Expected_Price,
+                  "regs_date": farmer_array2[i].createdAt,
+              }
+              farmer_records2.push(obj);
+          }
+      }
+  
+      for(var i=0;i<farmer_records2.length;i++){
+          worksheet2.addRow(farmer_records2[i]);
+      }
+  
+      worksheet2.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+
+
+      //3
+      const worksheet3 = workbook.addWorksheet("Farmer_Form-3_Data");
+    
+      worksheet3.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "Crop_Name", key: "crop_name", width: 30 },
+          { header: "Drying", key: "drying", width: 30 },
+          { header: "Grading", key: "grading", width: 30 },
+          { header: "Cleaning", key: "cleaning", width: 30 },
+          { header: "Crushed_powder", key: "crushed_powder", width: 30 },
+          { header: "Juice_Extraction", key: "Juice_Extraction", width: 30 },
+          { header: "Oil_Extract", key: "Oil_Extract", width: 30 },
+          { header: "Packaging", key: "Packaging", width: 30 },
+          { header: "Storage", key: "Storage", width: 30 },
+          { header: "others", key: "others", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array3= await models.valueadd.findAll({where:{}});
+      let farmer_records3=[];
+  
+      for(var i=0;i<farmer_array3.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array3[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array3[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+
+          let allRecords=farmer_array3[i].list_of_all_records_entered_by_farmer || [];
+          for(var j=0;j<allRecords.length;j++){
+              let crop_array=allRecords[j].Crop_Name || [];
+              let obj={
+                  "name": farmer.name,
+                  "email": farmer.email,
+                  "mobile": farmer.mobile,
+                  "crop_name": crop_array.join(','),
+                  "drying": allRecords[j].Drying ? "Filled": "Not Filled",
+                  "grading": allRecords[j].Grading ? "Filled": "Not Filled",
+                  "cleaning": allRecords[j].Cleaning ? "Filled": "Not Filled",
+                  "crushed_powder": allRecords[j].Crushed_powder ? "Filled": "Not Filled",
+                  "Juice_Extraction": allRecords[j].Juice_Extraction ? "Filled": "Not Filled",
+                  "Oil_Extract": allRecords[j].Oil_Extract ? "Filled": "Not Filled",
+                  "Packaging": allRecords[j].Packaging ? "Filled": "Not Filled",
+                  "Storage": allRecords[j].Storage ? "Filled": "Not Filled",
+                  "others": allRecords[j].others,
+                  "regs_date": farmer_array3[i].createdAt,
+              }
+              farmer_records3.push(obj);
+          }
+      }
+  
+      for(var i=0;i<farmer_records3.length;i++){
+          worksheet3.addRow(farmer_records3[i]);
+      }
+  
+      worksheet3.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+
+
+      //4
+      const worksheet4 = workbook.addWorksheet("Farmer_Form-4_Data");
+    
+      worksheet4.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "Yes/No", key: "yes_or_no", width: 30 },
+          { header: "Ayurvedic Product Info", key: "ayurvedic_product_info", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array4= await models.ayurvedic_product.findAll({where:{}});
+      let farmer_records4=[];
+  
+      for(var i=0;i<farmer_array4.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array4[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array4[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+
+          let obj={
+              "name": farmer.name,
+              "email": farmer.email,
+              "mobile": farmer.mobile,
+              "yes_or_no": farmer_array4[i].yes_or_no,
+              "ayurvedic_product_info": farmer_array4[i].ayurvedic_product_info,
+              "regs_date": farmer_array4[i].createdAt,
+          }
+          farmer_records4.push(obj);
+      }
+  
+      for(var i=0;i<farmer_records4.length;i++){
+          worksheet4.addRow(farmer_records4[i]);
+      }
+  
+      worksheet4.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+  
+
+      //5
+      const worksheet5 = workbook.addWorksheet("Farmer_Form-5_Data");
+    
+      worksheet5.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "Yes/No", key: "yes_or_no", width: 30 },
+          { header: "Name of organic agency", key: "name_of_organic_farm_certifying_agency", width: 30 },
+          { header: "Date/year of Registration", key: "date_and_year_of_registration", width: 30 },
+          { header: "Registration_no", key: "registration_no", width: 30 },
+          { header: "Any Lab Test", key: "have_you_done_any_lab_test", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array5= await models.organic.findAll({where:{}});
+      let farmer_records5=[];
+  
+      for(var i=0;i<farmer_array5.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array5[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array5[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+
+          let obj={
+              "name": farmer.name,
+              "email": farmer.email,
+              "mobile": farmer.mobile,
+              "yes_or_no": farmer_array5[i].yes_or_no,
+              "name_of_organic_farm_certifying_agency": farmer_array5[i].name_of_organic_farm_certifying_agency,
+              "date_and_year_of_registration": farmer_array5[i].date_and_year_of_registration,
+              "registration_no": farmer_array5[i].registration_no,
+              "have_you_done_any_lab_test": farmer_array5[i].have_you_done_any_lab_test,
+              "regs_date": farmer_array5[i].createdAt,
+          }
+          farmer_records5.push(obj);
+      }
+  
+      for(var i=0;i<farmer_records5.length;i++){
+          worksheet5.addRow(farmer_records5[i]);
+      }
+  
+      worksheet5.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+  
+
+      //6
+      const worksheet6 = workbook.addWorksheet("Farmer_Form-6_Data");
+    
+      worksheet6.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "Yes/No", key: "yes_or_no", width: 30 },
+          { header: "Name of Vendor", key: "name_of_vendor", width: 30 },
+          { header: "Address", key: "address", width: 30 },
+          { header: "Mobile Number", key: "mobile_number", width: 30 },
+          { header: "Email_Id", key: "email_id", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array6= await models.farmbuyer.findAll({where:{}});
+      let farmer_records6=[];
+  
+      for(var i=0;i<farmer_array6.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array6[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array6[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+
+          let obj={
+              "name": farmer.name,
+              "email": farmer.email,
+              "mobile": farmer.mobile,
+              "yes_or_no": farmer_array6[i].yes_or_no,
+              "name_of_vendor": farmer_array6[i].name_of_vendor,
+              "address": farmer_array6[i].address,
+              "mobile_number": farmer_array6[i].mobile_number,
+              "email_id": farmer_array6[i].email_id,
+              "regs_date": farmer_array6[i].createdAt,
+          }
+          farmer_records6.push(obj);
+      }
+  
+      for(var i=0;i<farmer_records6.length;i++){
+          worksheet6.addRow(farmer_records6[i]);
+      }
+  
+      worksheet6.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+
+
+    
+      //7
+      const worksheet7 = workbook.addWorksheet("Farmer_Form-7_Data");
+    
+      worksheet7.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "Name_of_medicinal_crop", key: "Name_of_medicinal_crop", width: 30 },
+          { header: "Problem_experienced_briefly", key: "Problem_experienced_briefly", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array7= await models.problem.findAll({where:{}});
+      let farmer_records7=[];
+  
+      for(var i=0;i<farmer_array7.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array7[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array7[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+
+          let allRecords=farmer_array7[i].list_of_all_records_entered_by_farmer || [];
+          for(var j=0;j<allRecords.length;j++){
+              let medicinal_crop_array=allRecords[j].Name_of_medicinal_crop || [];
+              let obj={
+                  "name": farmer.name,
+                  "email": farmer.email,
+                  "mobile": farmer.mobile,
+                  "Name_of_medicinal_crop": medicinal_crop_array.join(','),
+                  "Problem_experienced_briefly": allRecords[j].Problem_experienced_briefly,
+                  "regs_date": farmer_array7[i].createdAt,
+              }
+              farmer_records7.push(obj);
+          }
+      }
+  
+      for(var i=0;i<farmer_records7.length;i++){
+          worksheet7.addRow(farmer_records7[i]);
+      }
+  
+      worksheet7.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+
+
+      //8
+      const worksheet8 = workbook.addWorksheet("Farmer_Form-8_Data");
+    
+      worksheet8.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "Yes/No", key: "yes_or_no", width: 30 },
+          { header: "Experiment", key: "experiment", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array8= await models.experiment.findAll({where:{}});
+      let farmer_records8=[];
+  
+      for(var i=0;i<farmer_array8.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array8[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array8[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+
+          let obj={
+              "name": farmer.name,
+              "email": farmer.email,
+              "mobile": farmer.mobile,
+              "yes_or_no": farmer_array8[i].yes_or_no,
+              "experiment": farmer_array8[i].experiment,
+              "regs_date": farmer_array8[i].createdAt,
+          }
+          farmer_records8.push(obj);
+      }
+  
+      for(var i=0;i<farmer_records8.length;i++){
+          worksheet8.addRow(farmer_records8[i]);
+      }
+  
+      worksheet8.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+
+
+      //9
+      const worksheet9 = workbook.addWorksheet("Farmer_Form-9_Data");
+    
+      worksheet9.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "Yes/No", key: "yes_or_no", width: 30 },
+          { header: "Name_of_medicinal_crop", key: "Name_of_medicinal_crop", width: 30 },
+          { header: "Area_in _Acre", key: "Area_in_Acre", width: 30 },
+          { header: "Provide_the_address", key: "Provide_the_address", width: 30 },
+          { header: "Buyers_if_you_know_already", key: "Buyers_if_you_know_already", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array9= await models.futureplant.findAll({where:{}});
+      let farmer_records9=[];
+  
+      for(var i=0;i<farmer_array9.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array9[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array9[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+
+          let allRecords=farmer_array9[i].list_of_all_records_entered_by_farmer || [];
+          for(var j=0;j<allRecords.length;j++){
+              let medicinal_crop_array=allRecords[j].Name_of_medicinal_crop || [];
+              let obj={
+                  "name": farmer.name,
+                  "email": farmer.email,
+                  "mobile": farmer.mobile,
+                  "yes_or_no": farmer_array9[i].yes_or_no,
+                  "Name_of_medicinal_crop": medicinal_crop_array.join(','),
+                  "Area_in_Acre": allRecords[j].Area_in_Acre,
+                  "Provide_the_address": allRecords[j].Provide_the_address,
+                  "Buyers_if_you_know_already": allRecords[j].Buyers_if_you_know_already,
+                  "regs_date": farmer_array9[i].createdAt,
+              }
+              farmer_records9.push(obj);
+          }
+      }
+  
+      for(var i=0;i<farmer_records9.length;i++){
+          worksheet9.addRow(farmer_records9[i]);
+      }
+  
+      worksheet9.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+
+    
+      //10
+      const worksheet10 = workbook.addWorksheet("Farmer_Form-10_Data");
+    
+      worksheet10.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "Yes/No", key: "yes_or_no", width: 30 },
+          { header: "Name of Nearby Farmer", key: "name", width: 30 },
+          { header: "Address", key: "address", width: 30 },
+          { header: "Pin Code", key: "pin_code_number", width: 30 },
+          { header: "Mobile", key: "mobile", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array10= await models.nearbyfarmer.findAll({where:{}});
+      let farmer_records10=[];
+  
+      for(var i=0;i<farmer_array10.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array10[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array10[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+
+          let obj={
+              "name": farmer.name,
+              "email": farmer.email,
+              "mobile": farmer.mobile,
+              "yes_or_no": farmer_array10[i].yes_or_no,
+              "name": farmer_array10[i].name,
+              "address": farmer_array10[i].address,
+              "pin_code_number": farmer_array10[i].pin_code_number,
+              "mobile": farmer_array10[i].mobile,
+              "regs_date": farmer_array10[i].createdAt,
+          }
+          farmer_records10.push(obj);
+      }
+  
+      for(var i=0;i<farmer_records10.length;i++){
+          worksheet10.addRow(farmer_records10[i]);
+      }
+  
+      worksheet10.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+  
+
+
+      //11
+      const worksheet11 = workbook.addWorksheet("Farmer_Form-11_Data");
+    
+      worksheet11.columns = [
+          { header: "NAME", key: "name", width: 30 },
+          { header: "EMAIL", key: "email", width: 30 },
+          { header: "MOBILE", key: "mobile", width: 30 },
+          { header: "Date_of_filling", key: "date_of_filling", width: 30 },
+          { header: "REGISTRATION DATE", key: "regs_date", width: 30 },
+        ];
+      
+      let farmer_array11= await models.dof.findAll({where:{}});
+      let farmer_records11=[];
+  
+      for(var i=0;i<farmer_array11.length;i++){
+          let farmer= await models.user.findOne({where:{"id": farmer_array11[i].userid}});
+          
+          let checkUserStatus= await models.userStatus.findOne({where:{"userid": farmer_array11[i].userid}});
+          if(checkUserStatus.status=='Remove'){
+              continue;
+          }
+          
+          let obj={
+              "name": farmer.name,
+              "email": farmer.email,
+              "mobile": farmer.mobile,
+              "date_of_filling": farmer_array11[i].date_of_filling,
+              "regs_date": farmer_array11[i].createdAt,
+          }
+          farmer_records11.push(obj);
+      }
+  
+      for(var i=0;i<farmer_records11.length;i++){
+          worksheet11.addRow(farmer_records11[i]);
+      }
+  
+      worksheet11.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+      });
+  
+
+      const data = await workbook.xlsx.writeFile(`Exported Farmer Form Data.xlsx`);
+  
+      fs.readFile(path.join(__dirname,`../Exported Farmer Form Data.xlsx`), async (err, data) => {
+          if (err) {
+            console.error(err)
+            res.status(400).json({
+              status: "failure",
+              message: "Some error occurred in reading file from locally!!",
+              error: err
+            });
+          }
+  
+          let today = Date();
+          const params = {
+               ACL: 'private',
+                Bucket: process.env.AWS_BUCKET_NAME ,
+                Key: `${today}.xlsx`, // File name you want to save as in S3
+                Body: data,
+                ContentType:'application/vnd.ms-excel'
+            };
+    
+        // Uploading files to the bucket
+        s3.upload(params, function(err, data) {
+            if (err) {
+              console.error(err)
+              res.status(400).json({
+                status: "failure",
+                message: "Some error occurred while uploading file to s3!!",
+                error: err
+              });
+            }
+            console.log(`File uploaded successfully. ${data.Location}`);
+            var obj = { 
+              Bucket: process.env.AWS_BUCKET_NAME,
+              Key: `${today}.xlsx`,
+              // Expires: 60*5
+            };
+            s3.getSignedUrl('getObject',obj,(err,url)=>{
+              if (err) {
+                  console.error(err)
+                  res.status(400).json({
+                    status: "failure",
+                    message: "Some error occurred in getting signed url!!",
+                    error: err
+                  });
+              }
+              res.status(200).json({
+                  status: "success",
+                  message: "Successfully exported data!!",
+                  data: `${url}`
+                });
+              });
+  
+            });
+        
+        })
+  
+    } 
+    catch (err) {
+      console.log(err);
+      res.status(400).json({
+        status: "failure",
+        message: "Some error occurred!!",
+        data: null,
+      });
+  }
+}
+
+
 exports.exportFarmerFormData1 = async function(req, res){
     try {
         

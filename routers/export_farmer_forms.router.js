@@ -1,6 +1,8 @@
 var router = require('express').Router();
 var index = require('../controllers/export_farmer_forms.controller.js');
 
+router.get('/admin/export/data/farmer/all/forms', index.exportFarmerFormDataAll);
+
 router.get('/admin/export/data/farmer/form1', index.exportFarmerFormData1);
 
 router.get('/admin/export/data/farmer/form2', index.exportFarmerFormData2);
