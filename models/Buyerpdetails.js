@@ -23,11 +23,19 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.TEXT
         },
 
+        father_or_husband_name:{
+            type: Sequelize.TEXT
+        },
+
         address_society_street_house_number:{
             type: Sequelize.TEXT
         },
 
-        village:{
+        state:{
+            type: Sequelize.TEXT
+        },
+
+        district:{
             type: Sequelize.TEXT
         },
 
@@ -35,7 +43,7 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.TEXT
         },
 
-        district:{
+        village:{
             type: Sequelize.TEXT
         },
 
